@@ -1,0 +1,62 @@
+:root {
+  --PrimaryColor: hsl(151, 25%, 45%);
+  --SecondaryColor: hsl(143, 82%, 22%);
+  --gradientColor: linear-gradient(
+    to right,
+    hsl(148, 23%, 65%),
+    hsl(137, 30%, 40%)
+  );
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --textColor: hsl(240, 4%, 36%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --greyText: rgb(190, 190, 190);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: rgb(240, 240, 246);
+  --cardBG: rgb(225, 225, 235);
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  height: 40vh;
+
+  .searchDiv {
+    display: flex;
+    width: 80%;
+    position: relative;
+    padding: 1rem;
+    background-color: var(--whiteColor);
+    border-radius: 20px;
+    gap: 1rem;
+
+    .inputDiv {
+      width: 85%;
+      height: 60px;
+      padding: 1rem;
+      background: var(--inputColor);
+      border-radius: 4rem;
+
+      .input {
+        background: none;
+        border: none;
+        width: 100%;
+        font-size: 25px;
+        font-weight: 500;
+
+        &::placeholder {
+          font-size: 25px;
+        }
+      }
+    }
+    .btn {
+      a {
+        font-weight: 600;
+        color: var(--whiteColor);
+      }
+    }
+  }
+}

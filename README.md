@@ -24,3 +24,11 @@ npm install axios
 ```
 npm install react-router-dom
 ```
+
+```
+npm install tailwindcss
+```
+
+```
+ npm install swiper
+ ```
