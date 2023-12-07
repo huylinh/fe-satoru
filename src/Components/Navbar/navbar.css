@@ -1,0 +1,45 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 10px 10px 10px;
+  border-bottom: 2px solid black;
+}
+
+.left-section,
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.right-section button {
+  margin-left: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.right-section .login-btn {
+  background-color: transparent;
+  color: black; 
+  border: 2px solid #ddd;
+}
+
+.right-section .login-btn:hover {
+  background-color: #f1f1f1;
+}
+
+.right-section .register-btn {
+  background-color: #44adb4;
+  color: white; 
+  border: none;
+}
+
+.right-section .register-btn:hover {
+  background-color: #2f8f93;
+}
+
+.center-section img {
+  max-height: 40px;
+}
