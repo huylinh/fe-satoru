@@ -6,22 +6,46 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import Checkbox from '@mui/material/Checkbox';
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 import Workspace from "../../Components/Workspace/Workspace.jsx";
 import Navbar from "../../Components/Navbar/Navbar.jsx";
+import Selector from "../../Components/Selector/Selector.jsx";
 import { Slider } from "@mui/material";
 
 const Result = () => {
     const max = 500000;
 
+    const [selectedOption, setSelectedOption] = useState();
+
+    const handleChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
+
+    const options = [
+        { value: 1, label: 'Giá' },
+        { value: 2, label: 'Đánh giá' },
+        { value: 3, label: 'Khoảng cách' },
+    ];
+
     return (
         <>
-            <div className=" ">
+            <div className="">
                 <div className="">
                     <Navbar></Navbar>
+                </div>
+                <div className="d-flex w-full mt-5 mb-12" style={{ display: "inline-flex", justifyContent: "space-between" }}>
+                    <button className="rounded-lg h-12 "
+                        style={{ 'background-color': '#113437', 'color': 'white' }}>
+                        Trở lại
+                    </button>
+                    <Selector
+                        label={selectedOption? options[selectedOption - 1].label : "Sắp xếp theo"}
+                        value={selectedOption}
+                        onChange={handleChange}
+                        options={options}
+                    ></Selector>
                 </div>
                 <div className="flex gap-10">
                     <div className="filter-wrap py-11 px-8 flex flex-col space-y-4 text-left">

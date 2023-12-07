@@ -1,0 +1,19 @@
+.selector {
+    display: inline-flex;
+    width: 30%;
+    text-align: left;
+}
+
+.selector__label{
+    display: flex;
+    width: 40%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.selector__form-control {
+    width: 100%;
+    margin-bottom: 16px;
+}
