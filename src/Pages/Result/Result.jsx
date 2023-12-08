@@ -13,20 +13,32 @@ import Workspace from "../../Components/Workspace/Workspace.jsx";
 import Navbar from "../../Components/Navbar/Navbar.jsx";
 import Selector from "../../Components/Selector/Selector.jsx";
 import { Slider } from "@mui/material";
+import { Label } from "@mui/icons-material";
 
 const Result = () => {
     const max = 500000;
 
-    const [selectedOption, setSelectedOption] = useState();
+    const [selection, setSelection] = useState();
+    const [order, setOrder] = useState();
 
-    const handleChange = (event) => {
-        setSelectedOption(event.target.value);
+    const handleSelectionChange = (event) => {
+        setSelection(event.target.value);
     };
+
+    const handleOrderChange = (event) => {
+        setOrder(event.target.value);
+    }
+
 
     const options = [
         { value: 1, label: 'Giá' },
         { value: 2, label: 'Đánh giá' },
         { value: 3, label: 'Khoảng cách' },
+    ];
+
+    const orders = [
+        { value: 1, label: "Giảm dần" },
+        { value: 2, label: "Tăng dần" },
     ];
 
     return (
@@ -35,17 +47,26 @@ const Result = () => {
                 <div className="">
                     <Navbar></Navbar>
                 </div>
-                <div className="d-flex w-full mt-5 mb-12" style={{ display: "inline-flex", justifyContent: "space-between" }}>
+                <div className="d-inline-flex w-full mt-5 mb-12" style={{ display: "inline-flex", justifyContent: "space-between" }}>
                     <button className="rounded-lg h-12 "
                         style={{ 'background-color': '#113437', 'color': 'white' }}>
                         Trở lại
                     </button>
-                    <Selector
-                        label={selectedOption? options[selectedOption - 1].label : "Sắp xếp theo"}
-                        value={selectedOption}
-                        onChange={handleChange}
-                        options={options}
-                    ></Selector>
+                    <div className="d-inline-flex" style={{ display: "inline-flex", justifyContent: "flex-end", alignItems: "center" , width: "50%" }}>
+                        <p>Sắp xếp theo</p>
+                        <Selector
+                            label={selection ? options[selection - 1].label : "Sắp xếp theo"}
+                            value={selection}
+                            onChange={handleSelectionChange}
+                            options={options}
+                        ></Selector>
+                        <Selector
+                            label={order ? orders[order - 1].label : "Thứ tự"}
+                            value={order}
+                            onChange={handleOrderChange}
+                            options={orders}
+                        ></Selector>
+                    </div>
                 </div>
                 <div className="flex gap-10">
                     <div className="filter-wrap py-11 px-8 flex flex-col space-y-4 text-left">
