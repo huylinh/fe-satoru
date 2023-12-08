@@ -1,28 +1,24 @@
 import React from "react";
 import "./navbar.css";
+import Search from "../Search/Search";
+
 const Navbar = () => {
   return (
-    <section className="navBarSection">
-      <header className="header flex">
-        <div className="logoDiv">
-          <a href="/" className="logo flex">
-            <h1>Workspace</h1>
-          </a>
+    <>
+      <div className="navbar flex">
+        <div className="left-section">
+          <Search></Search>
         </div>
-
-        <div className="navbar">
-          <ul className="navLists flex">
-            <button className="btn">
-              <a href="#">Đăng ký</a>
-            </button>
-            <button className="btn">
-              <a href="#">Đăng nhập</a>
-            </button>
-          </ul>
+        <div className="center-section">
+          <img src="" alt="Logo" />
         </div>
-      </header>
-    </section>
-  );
+        <div className="right-section">
+          <button className="register-btn">Đăng ký</button>
+          <button className="login-btn">Đăng nhập</button>
+        </div>
+      </div>
+    </>
+  )
 };
 
 export default Navbar;

@@ -2,13 +2,13 @@ import React from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Search from "../../Components/Search/Search";
 import List from "../../Components/Proposal/Proposal";
-import ListWorkspace from "../../Components/ListWorkspace/ListWorkspace";
+import ListWorkspace from "../../Components/ListWorksapce/ListWorkspace";
 
 const Home = () => {
   return (
     <>
         <Navbar/>
-        <Search/>
+        {/* <Search/> */}
         <ListWorkspace/>
         <List/>
     </>

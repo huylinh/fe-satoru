@@ -1,77 +1,45 @@
-/* Colors and styling */
-:root {
-  --PrimaryColor: hsl(151, 25%, 45%);
-  --SecondaryColor: hsl(143, 82%, 22%);
-  --gradientColor: linear-gradient(
-    to right,
-    hsl(148, 23%, 65%),
-    hsl(137, 30%, 40%)
-  );
-  --whiteColor: hsl(0, 0%, 100%);
-  --blackColor: hsl(201, 33%, 16%);
-  --textColor: hsl(240, 4%, 36%);
-  --whiteColorDeam: hsl(0, 0%, 93%);
-  --greyText: rgb(190, 190, 190);
-  --inputColor: rgb(239, 239, 239);
-  --bodyColor: rgb(240, 240, 246);
-  --cardBG: rgb(225, 225, 235);
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 10px 10px 10px;
+  border-bottom: 2px solid black;
 }
 
-.navBarSection {
-  .header {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--whiteColor);
-    width: 100%;
-    padding: 1rem;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(2, 15, 29, 0.904);
+.left-section,
+.right-section {
+  display: flex;
+  align-items: center;
+}
 
-    .navBar {
-      position: absolute;
-      background: var(--whiteColorDeam);
-      height: max-content;
-      width: 80%;
-      border-radius: 1rem;
-      top: -500rem;
-      left: 50%;
-      padding: 1rem;
-      transform: translate(-50%);
-      z-index: 2000;
-      box-shadow: 0 2px 4px rgba(2, 15, 29, 0.904);
-      transition: 0.5s ease-in-out;
+.right-section button {
+  margin-left: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-      .navLists {
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-        margin: auto;
-        padding: 0.5rem 0;
+.right-section .login-btn {
+  background-color: transparent;
+  color: black; 
+  border: 2px solid #ddd;
+}
 
-        .navItem {
-          padding: 0.5rem 0;
+.right-section .login-btn:hover {
+  background-color: #f1f1f1;
+}
 
-          .navLink {
-            color: var(--textColor);
-            font-size: 0.9rem;
-            font-weight: 600;
-            &:hover {
-              color: var(--PrimaryColor);
-            }
-          }
-        }
+.right-section .register-btn {
+  background-color: #44adb4;
+  color: white; 
+  border: none;
+}
 
-        .btn {
-          margin-top: 1rem;
+.right-section .register-btn:hover {
+  background-color: #2f8f93;
+}
 
-          a {
-            font-weight: 600;
-            color: var(--whiteColor);
-          }
-        }
-      }
-    }
-  }
+.center-section img {
+  max-height: 40px;
 }

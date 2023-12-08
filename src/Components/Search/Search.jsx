@@ -1,18 +1,30 @@
 import React from "react";
 import "./search.css";
+
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+
 const Search = () => {
   return (
-    <section className="search">
-      <div className="searchDiv">
-        <div className="inputDiv flex">
-          <input className="input" type="text" placeholder="Tìm kiếm....." />
-        </div>
-        <button className="btn flex" type="submit">
-          <a href="#">Tìm kiếm</a>
-        </button>
+    <>
+      <div className="flex search-bar">
+        <TextField
+          focused={false}
+          placeholder="Tìm kiếm"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment>
+                <IconButton>
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+        >
+        </TextField>
       </div>
-    </section>
-  );
+    </>
+  )
 };
 
 export default Search;
