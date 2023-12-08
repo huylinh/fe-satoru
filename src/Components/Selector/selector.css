@@ -1,6 +1,7 @@
-.selector {
+.selector__container {
     display: inline-flex;
-    width: 30%;
+    margin-left: 10px;
+    width: 32%;
     text-align: left;
 }
 

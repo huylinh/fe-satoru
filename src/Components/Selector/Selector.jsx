@@ -5,10 +5,7 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 const Selector = ({ label, value, onChange, options }) => {
     return (
-        <div className="selector">
-            <div className="selector__label">
-                <label htmlFor="">Sắp xếp theo</label>
-            </div>
+        <div className="selector__container">
             <FormControl className="selector__form-control">
                 <InputLabel id="select-label">{label}</InputLabel>
                 <Select
