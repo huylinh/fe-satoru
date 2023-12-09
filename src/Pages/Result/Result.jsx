@@ -14,7 +14,6 @@ import {LinearProgress, Pagination, Slider} from "@mui/material";
 import {areas, statuses, services, label, options, orders} from "../../Utils/constant.js";
 import useListWorkspaces from "./useListWorkspaces.js";
 
-
 const Result = () => {
     const max = 500000;
     const {
@@ -100,7 +99,6 @@ const Result = () => {
         if (!Object.prototype.hasOwnProperty.call(filter, 'status') && Object.prototype.hasOwnProperty.call(queryString, 'status')) {
             delete params.status;
         }
-
         setQueryString(params);
     };
 
@@ -110,11 +108,9 @@ const Result = () => {
     const handleSelectionChange = (event) => {
         setSelection(event.target.value);
     };
-
     const handleOrderChange = (event) => {
         setOrder(event.target.value);
     }
-
 
     return (
         <>
@@ -260,7 +256,11 @@ const Result = () => {
 
                             <div className="flex flex-col space-y-4">
                                 <div className="font-bold text-xl leading-7 text-left">Kết quả</div>
-                                <div className="font-normal text-xl text-left">Có {total} địa điểm được tìm thấy</div>
+                                <div className="font-normal text-xl text-left">
+                                    {total > 0
+                                        ? `Có ${total} địa điểm được tìm thấy`
+                                        : 'Không có kết quả nào phù hợp'}
+                                </div>
                                 {isLoading && <>
                                     <div className="w-50">
                                         <LinearProgress className='mt-4 ml-10 progress-bar'/>
