@@ -1,10 +1,13 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import './App.css'
 import { NormalRoutes } from "./Routes/Routes";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 function App() {
-  
-  return (
+    const queryClient = new QueryClient()
+
+    return (
+        <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <Routes>
         <Route>
@@ -16,6 +19,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+        </QueryClientProvider>
   )
 }
 
