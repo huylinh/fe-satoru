@@ -1,4 +1,3 @@
-import React from "react";
 import "./search.css";
 
 import { IconButton, InputAdornment, TextField } from "@mui/material";

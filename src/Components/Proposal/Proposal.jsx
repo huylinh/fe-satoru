@@ -1,46 +1,51 @@
-import React from "react";
-import imageWorkspace from "../../assets/workspace.jpg";
+import Rating from "@mui/material/Rating";
+import StarIcon from '@mui/icons-material/Star';
+import imageWorkspace1 from "../../assets/workspace1.jpg";
+import imageWorkspace2 from "../../assets/workspace2.jpg";
+import imageWorkspace3 from "../../assets/workspace3.jpg";
+import imageWorkspace4 from "../../assets/workspace4.jpg";
+import imageWorkspace5 from "../../assets/workspace5.jpg";
 import "./proposal.css";
 const Data = [
   {
     id: 1,
-    imgSrc: imageWorkspace,
-    name: "Work Space",
+    imgSrc: imageWorkspace1,
+    name: "Creative Haven",
     description: "CUL TURAL RELAX",
-    location: "Hai Ba Trung",
-    start: "50",
+    location: "8 Trần Đại Nghĩa",
+    star: "5",
   },
   {
     id: 2,
-    imgSrc: imageWorkspace,
-    name: "Work Space",
+    imgSrc: imageWorkspace2,
+    name: "Tranquil Workspace",
     description: "CUL TURAL RELAX",
-    location: "Hai Ba Trung",
-    start: "50",
+    location: "4 Tạ Quang Bửu",
+    star: "4",
   },
   {
     id: 3,
-    imgSrc: imageWorkspace,
-    name: "Work Space",
+    imgSrc: imageWorkspace3,
+    name: "Multitask Zone",
     description: "CUL TURAL RELAX",
-    location: "Hai Ba Trung",
-    start: "50",
+    location: "10 Phạm Ngọc Thạch",
+    star: "4.5",
   },
   {
     id: 4,
-    imgSrc: imageWorkspace,
-    name: "Work Space",
+    imgSrc: imageWorkspace4,
+    name: "New Energy Studio",
     description: "CUL TURAL RELAX",
-    location: "Hai Ba Trung",
-    start: "50",
+    location: "18 Hai Ba Trung",
+    star: "4.5",
   },
   {
     id: 5,
-    imgSrc: imageWorkspace,
-    name: "Work Space",
+    imgSrc: imageWorkspace5,
+    name: "Serene Studio",
     description: "CUL TURAL RELAX",
-    location: "Hai Ba Trung",
-    star: "50",
+    location: "17 Nguyễn Chí Thanh",
+    star: "3.5",
   },
 ];
 
@@ -48,7 +53,7 @@ const List = () => {
   return (
     <section className="list container section">
       <div className="secTitle">
-        <h3 className="title">Đề xuất</h3>
+        <h3 className="title" style={{ color: 'black',fontWeight: 'bold', fontSize: '24px'  }}>Đề xuất</h3>
       </div>
 
       <div className="secContent grid">
@@ -63,17 +68,31 @@ const List = () => {
                 <h4 className="destTitle">{name}</h4>
                 <span className="continent flex">
                   {/* <BiCurrentLocation className="icon" /> */}
-                  <span className="name">{location}</span>
+                  <span>{location}</span>
                 </span>
 
                 <div className="fees flex">
-                  <div className="star">
+                  {/* <div className="star">
                     <h5>{star}</h5>
-                  </div>
+                  </div> */}
+                  <span>Quản lý</span>
                 </div>
 
-                <div className="desc">
+                {/* <div className="desc">
                   <p>{description}</p>
+                </div> */}
+                <div className="flex items-baseline space-x-2">
+                  <Rating
+                    name="text-feedback"
+                    value={star}
+                    readOnly
+                    precision={0.5}
+                    size="small"
+                    emptyIcon={
+                      <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                    }
+                  />
+                  <div className="text-xl  ">{star}</div>
                 </div>
               </div>
             </div>
