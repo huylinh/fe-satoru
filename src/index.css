@@ -88,7 +88,6 @@ button:focus-visible {
 
 .flex {
   display: flex;
-  align-items: center;
 }
 
 .grid {

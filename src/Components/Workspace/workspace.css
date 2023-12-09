@@ -6,7 +6,24 @@
     padding: 20px;
 }
 
-.wrap img {
-    width: 33%;
-    height: 100%;
+/*.wrap img {*/
+/*    width: 33%;*/
+/*    height: 100%;*/
+/*}*/
+
+
+.image-container {
+    width: 245px;
+    height: 245px;
+    overflow: hidden;
+    border-radius: 8px;
+
 }
+
+.image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+

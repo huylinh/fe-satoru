@@ -1,4 +1,3 @@
-import React from "react";
 import "./workspace.css";
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
@@ -6,31 +5,38 @@ import GroupIcon from '@mui/icons-material/Group';
 import SellIcon from '@mui/icons-material/Sell';
 import PlaceIcon from '@mui/icons-material/Place';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import useListWorkspaces from "../../Pages/Result/useListWorkspaces.js";
+import {CircularProgress} from "@mui/material";
 
-const Workspace = () => {
-    return(
+
+const Workspace = ({data}) => {
+
+    return (
         <div className="wrap">
-            <div className="flex" style={{'gap':'16px'}}>
-                <img src="./src/assets/workspace.jpg" className="" alt=""/>
+            <div className="flex" style={{'gap': '16px'}}>
+
+                <div className="image-container">
+                    <img src={data.image} className="image" alt=""/>
+                </div>
                 <div className="flex flex-col items-start space-y-4">
                     <div className="font-semibold text-2xl ">
-                        Hello world
+                        {data.name}
                     </div>
                     <div className="flex items-start flex-col space-y-1">
                         <span className="font-normal  text-l ">
-                            30 đánh giá
+                            {data.rating_count} đánh giá
                         </span>
                         <div className="flex items-baseline space-x-2">
                             <Rating
                                 name="text-feedback"
-                                value={3.5}
+                                value={data.rating}
                                 readOnly
                                 precision={0.5}
                                 size="small"
-                                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                emptyIcon={<StarIcon style={{opacity: 0.55}} fontSize="inherit"/>}
                             />
                             <div className="text-xl  ">
-                                3.5
+                                {data.rating}
                             </div>
                         </div>
                     </div>
@@ -41,7 +47,7 @@ const Workspace = () => {
                                 <GroupIcon></GroupIcon>
                             </div>
                             <span className="font-normal text-l ">
-                                Trạng thái : Đông đúc
+                                Trạng thái : {data.status}
                             </span>
                         </div>
                         <div className="flex gap-x-3">
@@ -49,7 +55,7 @@ const Workspace = () => {
                                 <SellIcon></SellIcon>
                             </div>
                             <span>
-                               Giá : <strong>50000VND/Ngày</strong>
+                               Giá : <strong>{data?.price} VND/Ngày</strong>
                             </span>
                         </div>
                         <div className="flex gap-x-3">
@@ -57,7 +63,7 @@ const Workspace = () => {
                                 <PlaceIcon></PlaceIcon>
                             </div>
                             <span className="font-normal  text-l">
-                                2 Dinh Liet Hoan Kiem
+                                {data?.address}
                             </span>
                         </div>
                         <div className="flex gap-x-3">
@@ -65,7 +71,7 @@ const Workspace = () => {
                                 <AccessTimeIcon></AccessTimeIcon>
                             </div>
                             <span className="font-normal text-l">
-                                08:00 - 23;00 - <strong>Opening</strong>
+                                {data?.opening_hour} - {data?.closing_hour} - <strong>Opening</strong>
                             </span>
                         </div>
                     </div>
@@ -76,6 +82,7 @@ const Workspace = () => {
         </div>
 
 
-    )};
+    )
+};
 
 export default Workspace;

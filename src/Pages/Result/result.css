@@ -1,12 +1,11 @@
 .filter-wrap{
     width: 369px;
-    height: 823px;
+    height: 859px;
     border : 1px solid black;
     border-radius: 8px;
 }
 
-.filter-wrap >>> .css-4jnixx-MuiStack-root>.MuiTextField-root{
-    min-width: 0;
+.css-4jnixx-MuiStack-root>.MuiTextField-root{
+    min-width: 100px !important;
 }
-
 
