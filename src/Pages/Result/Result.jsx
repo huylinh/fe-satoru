@@ -276,8 +276,8 @@ const Result = () => {
                                         : 'Không có kết quả nào phù hợp'}
                                 </div>
                                 {isLoading && <>
-                                    <div className="w-50">
-                                        <LinearProgress className='mt-4 ml-10 progress-bar' />
+                                    <div className="w-100">
+                                        <LinearProgress className='mt-4 ml-10 progress-bar'  style={{ width: '300%' ,'margin-top':'50px'}}/>
                                     </div>
                                 </>}
                                 {isSuccess && listWorkspaces.map((item, index) => (
