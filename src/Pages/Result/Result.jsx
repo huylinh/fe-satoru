@@ -1,17 +1,17 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import "./result.css"
 import dayjs from 'dayjs';
-import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {TimePicker} from '@mui/x-date-pickers/TimePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import Checkbox from '@mui/material/Checkbox';
 import Workspace from "../../Components/Workspace/Workspace.jsx";
 import Navbar from "../../Components/Navbar/Navbar.jsx";
 import Selector from "../../Components/Selector/Selector.jsx";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import {LinearProgress, Pagination, Slider} from "@mui/material";
-import {areas, statuses, services, label, options, orders} from "../../Utils/constant.js";
+import { LinearProgress, Pagination, Slider } from "@mui/material";
+import { areas, statuses, services, label, options, orders } from "../../Utils/constant.js";
 import useListWorkspaces from "./useListWorkspaces.js";
 
 const Result = () => {
@@ -33,8 +33,12 @@ const Result = () => {
         return time.format('hh:mm A');
     };
 
+    const [selection, setSelection] = useState();
+    const [order, setOrder] = useState();
+    const [nameString, setNameString] = useState('');
+
     useEffect(() => {
-        const convertedFilter = {...queryString};
+        const convertedFilter = { ...queryString };
         if (convertedFilter.service) {
             convertedFilter.service = queryString.service.map(item => parseInt(item, 10));
         }
@@ -45,16 +49,16 @@ const Result = () => {
             convertedFilter.area = queryString.area.map(item => parseInt(item, 10));
         }
 
-        setFilter({...convertedFilter});
+        setFilter({ ...convertedFilter });
     }, []);
 
     const handleChange = (key, value) => {
-        setFilter({...filter, [key]: value});
+        setFilter({ ...filter, [key]: value });
     }
 
     const handleClock = (key, value) => {
         console.log(value)
-        setFilter({...filter, [key]: value});
+        setFilter({ ...filter, [key]: value });
     }
 
     const handleCheckboxChange = (key, value) => {
@@ -75,7 +79,7 @@ const Result = () => {
                 ? prevFilter[key].filter((item) => item !== value)
                 : [...prevFilter[key], value];
 
-            const updatedFilter = {...prevFilter};
+            const updatedFilter = { ...prevFilter };
             if (updatedArray.length === 0) {
                 delete updatedFilter[key];
             } else {
@@ -88,7 +92,8 @@ const Result = () => {
     const handleSubmit = () => {
         const params = {
             ...queryString,
-            ...filter
+            ...filter,
+            ...(nameString.length > 0 ? { name: nameString } : {}),
         };
         if (!Object.prototype.hasOwnProperty.call(filter, 'area') && Object.prototype.hasOwnProperty.call(queryString, 'area')) {
             delete params.area;
@@ -99,12 +104,12 @@ const Result = () => {
         if (!Object.prototype.hasOwnProperty.call(filter, 'status') && Object.prototype.hasOwnProperty.call(queryString, 'status')) {
             delete params.status;
         }
+        if (!(nameString.length > 0)) {
+            delete params.name;
+        }
         setQueryString(params);
         window.scrollTo(0, 0);
     };
-
-    const [selection, setSelection] = useState();
-    const [order, setOrder] = useState();
 
     const handleSelectionChange = (event) => {
         setSelection(event.target.value);
@@ -113,16 +118,24 @@ const Result = () => {
         setOrder(event.target.value);
     }
 
+    const handleSearchChange = (value) => {
+        setNameString(value);
+    };
+
+
     return (
         <>
             <div className="">
                 <div className="">
-                    <Navbar></Navbar>
+                    <Navbar
+                        onSearchChange={handleSearchChange}
+                        handleSearchSubmit={handleSubmit}
+                    ></Navbar>
                 </div>
                 <div className="d-inline-flex w-full mt-5 mb-12"
-                     style={{display: "inline-flex", justifyContent: "space-between"}}>
+                    style={{ display: "inline-flex", justifyContent: "space-between" }}>
                     <button className="rounded-lg h-12 "
-                            style={{'background-color': '#113437', 'color': 'white'}}>
+                        style={{ 'background-color': '#113437', 'color': 'white' }}>
                         Trở lại
                     </button>
                     <div className="d-inline-flex" style={{
@@ -148,7 +161,7 @@ const Result = () => {
                 </div>
 
                 <div>
-                    <div className=" " style={{'min-width': '1336px', 'min-height': '1070px'}}>
+                    <div className=" " style={{ 'min-width': '1336px', 'min-height': '1070px' }}>
                         <div className="flex gap-10">
                             <div className="filter-wrap py-11 px-8 flex flex-col space-y-4 text-left">
                                 <div className="text-2xl font-semibold leading-7 ">Lọc</div>
@@ -188,11 +201,11 @@ const Result = () => {
                                         {areas.map((area, index) => (
                                             <div key={index} className="flex gap-1 items-center">
                                                 <Checkbox {...label}
-                                                          value={(index)}
-                                                          checked={(filter.area && filter.area.includes(index + 1)) || false}
-                                                          onChange={() => handleCheckboxChange("area", (index + 1))}
-                                                          style={{'color': '#44ADB4', 'padding': '0'}}
-                                                          size="small"/>
+                                                    value={(index)}
+                                                    checked={(filter.area && filter.area.includes(index + 1)) || false}
+                                                    onChange={() => handleCheckboxChange("area", (index + 1))}
+                                                    style={{ 'color': '#44ADB4', 'padding': '0' }}
+                                                    size="small" />
                                                 <div>{area} </div>
 
                                             </div>
@@ -208,11 +221,11 @@ const Result = () => {
                                             {services.map((service, index) => (
                                                 <div key={index} className="flex gap-1 items-center">
                                                     <Checkbox {...label}
-                                                              value={index + 1}
-                                                              checked={(filter.service && filter.service.includes(index + 1)) || false}
-                                                              onChange={() => handleCheckboxChange("service", index + 1)}
-                                                              style={{'color': '#44ADB4', 'padding': '0'}}
-                                                              size="small"/>
+                                                        value={index + 1}
+                                                        checked={(filter.service && filter.service.includes(index + 1)) || false}
+                                                        onChange={() => handleCheckboxChange("service", index + 1)}
+                                                        style={{ 'color': '#44ADB4', 'padding': '0' }}
+                                                        size="small" />
                                                     <div>{service}</div>
                                                 </div>
                                             ))}
@@ -226,7 +239,7 @@ const Result = () => {
                                     defaultValue={0}
                                     step={1000}
                                     max={max}
-                                    style={{'color': '#44ADB4', 'padding': '0', 'margin-left': '8px'}}
+                                    style={{ 'color': '#44ADB4', 'padding': '0', 'margin-left': '8px' }}
                                     onChange={(event) => handleChange('price', event.target.value)}
                                     valueLabelDisplay="auto"
                                 />
@@ -236,11 +249,11 @@ const Result = () => {
                                     {statuses.map((status, index) => (
                                         <div key={index} className="flex gap-1 items-center">
                                             <Checkbox {...label}
-                                                      value={index}
-                                                      checked={(filter.status && filter.status.includes(index)) || false}
-                                                      onChange={() => handleCheckboxChange("status", index)}
-                                                      style={{'color': '#44ADB4', 'padding': '0'}}
-                                                      size="small"/>
+                                                value={index}
+                                                checked={(filter.status && filter.status.includes(index)) || false}
+                                                onChange={() => handleCheckboxChange("status", index)}
+                                                style={{ 'color': '#44ADB4', 'padding': '0' }}
+                                                size="small" />
                                             <div>{status}</div>
                                         </div>
                                     ))}
@@ -248,8 +261,8 @@ const Result = () => {
 
                                 <div className="py-4">
                                     <button className="rounded-lg w-full h-12 "
-                                            onClick={handleSubmit}
-                                            style={{'background-color': '#44ADB4', 'color': 'white'}}>
+                                        onClick={handleSubmit}
+                                        style={{ 'background-color': '#44ADB4', 'color': 'white' }}>
                                         Lọc
                                     </button>
                                 </div>
@@ -264,11 +277,11 @@ const Result = () => {
                                 </div>
                                 {isLoading && <>
                                     <div className="w-50">
-                                        <LinearProgress className='mt-4 ml-10 progress-bar'/>
+                                        <LinearProgress className='mt-4 ml-10 progress-bar' />
                                     </div>
                                 </>}
                                 {isSuccess && listWorkspaces.map((item, index) => (
-                                    <Workspace key={index} data={item}/>
+                                    <Workspace key={index} data={item} />
                                 ))}
                             </div>
                         </div>
