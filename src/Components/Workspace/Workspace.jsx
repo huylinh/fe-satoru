@@ -5,9 +5,6 @@ import GroupIcon from '@mui/icons-material/Group';
 import SellIcon from '@mui/icons-material/Sell';
 import PlaceIcon from '@mui/icons-material/Place';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import useListWorkspaces from "../../Pages/Result/useListWorkspaces.js";
-import {CircularProgress} from "@mui/material";
-
 
 const Workspace = ({data}) => {
 
@@ -47,7 +44,7 @@ const Workspace = ({data}) => {
                                 <GroupIcon></GroupIcon>
                             </div>
                             <span className="font-normal text-l ">
-                                Trạng thái : {data.status}
+                                Trạng thái: {data.status === '0' ? "Đông đúc" : data.status === '1' ? "Bình thường" : "Vắng vẻ"}
                             </span>
                         </div>
                         <div className="flex gap-x-3">
@@ -76,12 +73,8 @@ const Workspace = ({data}) => {
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
-
     )
 };
 
