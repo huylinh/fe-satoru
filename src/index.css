@@ -16,7 +16,8 @@
   --whiteColorDeam: hsl(0, 0%, 93%);
   --greyText: rgb(190, 190, 190);
   --inputColor: rgb(239, 239, 239);
-  --bodyColor: rgb(240, 240, 246);
+  /* --bodyColor: rgb(240, 240, 246); */
+  --bodyColor: #ffffff;
   --cardBG: rgb(225, 225, 235);
 
   --primary: #1f3e72;

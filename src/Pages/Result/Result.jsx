@@ -36,6 +36,7 @@ const Result = () => {
     const [selection, setSelection] = useState();
     const [order, setOrder] = useState();
     const [nameString, setNameString] = useState('');
+    const [price, setPrice] = useState(0);
 
     useEffect(() => {
         const convertedFilter = { ...queryString };
@@ -54,6 +55,7 @@ const Result = () => {
 
     const handleChange = (key, value) => {
         setFilter({ ...filter, [key]: value });
+        setPrice(value);
     }
 
     const handleClock = (key, value) => {
@@ -135,7 +137,7 @@ const Result = () => {
                 <div className="d-inline-flex w-full mt-5 mb-12"
                     style={{ display: "inline-flex", justifyContent: "space-between" }}>
                     <button className="rounded-lg h-12 "
-                        style={{ 'background-color': '#113437', 'color': 'white' }}>
+                        style={{ 'background-color': '#113437', 'color': 'white', 'font-size': '20px' }}>
                         Trở lại
                     </button>
                     <div className="d-inline-flex" style={{
@@ -166,7 +168,7 @@ const Result = () => {
                             <div className="filter-wrap py-11 px-8 flex flex-col space-y-4 text-left">
                                 <div className="text-2xl font-semibold leading-7 ">Lọc</div>
                                 <div className="border-b-2 border-black"></div>
-                                <div className="font-bold texl-l">Thời gian mở</div>
+                                <div className="font-bold texl-l">Thời gian</div>
                                 <div className="flex gap-4">
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['TimePicker']}>
@@ -235,6 +237,9 @@ const Result = () => {
 
                                 <div className="border-b-2 border-black"></div>
                                 <div className="font-bold texl-l">Giá</div>
+                                <p
+                                    style={{'color': '#44ADB4', 'font-size': '16px', 'font-weight': '400', 'margin': '10px 0px -5px 0'}} 
+                                >{price == 0 ? "Miễn phí" : price + " vnd"}</p>
                                 <Slider
                                     defaultValue={0}
                                     step={1000}
@@ -259,7 +264,7 @@ const Result = () => {
                                     ))}
                                 </div>
 
-                                <div className="py-4">
+                                <div className="pt-6 pb-0">
                                     <button className="rounded-lg w-full h-12 "
                                         onClick={handleSubmit}
                                         style={{ 'background-color': '#44ADB4', 'color': 'white' }}>

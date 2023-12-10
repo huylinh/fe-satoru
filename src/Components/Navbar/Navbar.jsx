@@ -3,6 +3,7 @@ import "./navbar.css";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
+import Logo from "../../assets/logo.png"
 
 const Navbar = ({ onSearchChange, handleSearchSubmit: handleSubmit }) => {
   const [inputValue, setInputValue] = useState('');
@@ -46,7 +47,7 @@ const Navbar = ({ onSearchChange, handleSearchSubmit: handleSubmit }) => {
           </div>
         </div>
         <div className="center-section">
-          <img src="" alt="Logo" />
+          <img className="header-logo" src={Logo} alt="Logo" />
         </div>
         <div className="right-section">
           <button className="register-btn">Đăng ký</button>
