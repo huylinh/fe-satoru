@@ -21,7 +21,7 @@ const Data = [
     name: "Tranquil Workspace",
     description: "CUL TURAL RELAX",
     location: "4 Tạ Quang Bửu",
-    star: "4",
+    star: "4.7",
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const Data = [
     name: "Multitask Zone",
     description: "CUL TURAL RELAX",
     location: "10 Phạm Ngọc Thạch",
-    star: "4.5",
+    star: "4.7",
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ const Data = [
     name: "Serene Studio",
     description: "CUL TURAL RELAX",
     location: "17 Nguyễn Chí Thanh",
-    star: "3.5",
+    star: "4.5",
   },
 ];
 

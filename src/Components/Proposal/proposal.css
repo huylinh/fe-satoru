@@ -51,12 +51,12 @@
       border-radius: 10px;
       align-items: center;
       /* background: var(--cardBG); */
-      background: rgba(207, 207, 210, 0.549);
-      box-shadow: 0 2px 4px rgba(96, 96, 98, 0.549);
+      background: rgba(250, 250, 250, 0.549);
+      box-shadow: 0 2px 4px rgba(35, 34, 34, 0.549);
       overflow: hidden;
       &:hover {
         background: var(--cardBG);
-        box-shadow: 1 4px 4px rgba(95, 95, 105, 0.549);
+        box-shadow: 1 4px 4px rgba(68, 68, 73, 0.549);
         transition: 0.3s ease;
       }
 
