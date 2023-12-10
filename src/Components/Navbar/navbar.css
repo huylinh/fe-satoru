@@ -40,6 +40,12 @@
   background-color: #2f8f93;
 }
 
-.center-section img {
-  max-height: 40px;
+/* Fix cứng đợi logo thật */
+.center-section .header-logo {
+  width: 200px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 43vw;
+  z-index: 9999;
 }
