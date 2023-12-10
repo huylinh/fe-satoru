@@ -5,6 +5,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import SellIcon from '@mui/icons-material/Sell';
 import PlaceIcon from '@mui/icons-material/Place';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import {  formatNumber } from "../../Utils/constant.js";
+
 
 const Workspace = ({data}) => {
 
@@ -52,7 +54,7 @@ const Workspace = ({data}) => {
                                 <SellIcon></SellIcon>
                             </div>
                             <span>
-                               Giá : <strong>{data?.price} VND/Ngày</strong>
+                               Giá : <strong> {formatNumber(data.price)} VND/Ngày</strong>
                             </span>
                         </div>
                         <div className="flex gap-x-3">

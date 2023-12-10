@@ -15,3 +15,7 @@ export const orders = [
     {value: 1, label: "Giảm dần"},
     {value: 2, label: "Tăng dần"},
 ];
+
+export const formatNumber = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}

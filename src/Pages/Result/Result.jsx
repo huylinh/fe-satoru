@@ -11,7 +11,7 @@ import Navbar from "../../Components/Navbar/Navbar.jsx";
 import Selector from "../../Components/Selector/Selector.jsx";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { LinearProgress, Pagination, Slider } from "@mui/material";
-import { areas, statuses, services, label, options, orders } from "../../Utils/constant.js";
+import { areas, statuses, services, label, options, orders , formatNumber } from "../../Utils/constant.js";
 import useListWorkspaces from "./useListWorkspaces.js";
 
 const Result = () => {
@@ -238,8 +238,8 @@ const Result = () => {
                                 <div className="border-b-2 border-black"></div>
                                 <div className="font-bold texl-l">Giá</div>
                                 <p
-                                    style={{'color': '#44ADB4', 'font-size': '16px', 'font-weight': '400', 'margin': '10px 0px -5px 0'}} 
-                                >{price == 0 ? "Miễn phí" : price + " vnd"}</p>
+                                    style={{'color': '#44ADB4', 'font-size': '16px', 'font-weight': '400', 'margin': '10px 0px -5px 0'}}
+                                >{price === 0 ? "Miễn phí" : formatNumber(price) + " VND"}</p>
                                 <Slider
                                     defaultValue={0}
                                     step={1000}
