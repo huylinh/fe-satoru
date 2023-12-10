@@ -57,6 +57,7 @@ export default function useListWorkspaces() {
     const handlePageChange = useCallback(
         (e, value) => {
             setQueryString({ ...queryString, page: value });
+            window.scrollTo(0, 0);
         },
         [queryString, setQueryString],
     );

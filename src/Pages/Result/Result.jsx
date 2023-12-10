@@ -100,6 +100,7 @@ const Result = () => {
             delete params.status;
         }
         setQueryString(params);
+        window.scrollTo(0, 0);
     };
 
     const [selection, setSelection] = useState();
