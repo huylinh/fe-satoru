@@ -21,6 +21,12 @@ const Navbar = ({ onSearchChange, handleSearchSubmit: handleSubmit }) => {
     handleSubmit()
   }
 
+  const handleEnterInputSubmit = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit()
+    }
+  }
+
   return (
     <>
       <div className="navbar flex">
@@ -31,6 +37,7 @@ const Navbar = ({ onSearchChange, handleSearchSubmit: handleSubmit }) => {
               placeholder="Tìm kiếm"
               value={inputValue}
               onChange={handleInputChange}
+              onKeyPress={handleEnterInputSubmit}
               InputProps={{
                 endAdornment: (
                   <InputAdornment>
