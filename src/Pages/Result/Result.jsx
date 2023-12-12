@@ -239,9 +239,10 @@ const Result = () => {
                                 <div className="font-bold texl-l">Giá</div>
                                 <p
                                     style={{'color': '#44ADB4', 'font-size': '16px', 'font-weight': '400', 'margin': '10px 0px -5px 0'}}
-                                >{price === 0 ? "Miễn phí" : formatNumber(price) + " VND"}</p>
+                                >{parseInt(filter?.price)  ?  formatNumber(parseInt(filter?.price)) + ' VND'  : "Miễn phí"}</p>
+
                                 <Slider
-                                    defaultValue={0}
+                                    defaultValue={filter.price ? parseInt(filter.price) : 0 }
                                     step={1000}
                                     max={max}
                                     style={{ 'color': '#44ADB4', 'padding': '0', 'margin-left': '8px' }}
