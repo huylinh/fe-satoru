@@ -1,51 +1,143 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../../Components/Navbar/Navbar";
 import MenuItem from "@mui/material/MenuItem";
+import Backdrop from "@mui/material/Backdrop";
 import Rating from "@mui/material/Rating";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-function Review() {
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
+import {
+  getWorkspaceDetailsService,
+  getWorkspaceReviewsService,
+} from "../../Services/workspaceDetailsService";
+import { useQuery } from "@tanstack/react-query";
+import { Box } from "@mui/material";
+import iconSet from "../../assets/icon/iconSet";
+import StandardImageList from "../../Components/StandardImageList/StandardImageList";
+
+const convertToProgressBar = (star) => {
+  const progressWidth = Math.round((star / 5) * 320);
+  return progressWidth;
+};
+
+function WorkspaceDetails() {
   const [reviewSortOpt, setReviewSortOpt] = useState();
+  const [isPopupPhotoGallery, setIsPopupPhotoGallery] = useState(false);
+
+  const workspaceParams = useParams();
+
+  const { isLoading: workspaceDetailsLoading, data: workspaceDetailsData } =
+    useQuery({
+      queryKey: ["workspaceDetails"],
+      queryFn: () => getWorkspaceDetailsService(workspaceParams.id),
+    });
+
+  const { isLoading: workspaceReviewsLoading, data: workspaceReviewsData } =
+    useQuery({
+      queryKey: ["workspaceReviews"],
+      queryFn: () => getWorkspaceReviewsService(workspaceParams.id),
+    });
+
+  if (workspaceDetailsLoading || workspaceReviewsLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          minWidth: "100%",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+  // console.log(workspaceDetailsData.data);
+  // console.log(workspaceReviewsData.data);
 
   const handleChange = (event) => {
     setReviewSortOpt(event.target.value);
   };
 
-  const convertToProgressBar = (star) => {
-    const progressWidth = Math.round((star / 5) * 320);
-    return progressWidth;
+  //
+  const wifi_total_rating = workspaceReviewsData.data.reduce(
+    (acc, item) => acc + Number(item.wifi_rating),
+    0
+  );
+
+  const space_total_rating = workspaceReviewsData.data.reduce(
+    (acc, item) => acc + Number(item.space_rating),
+    0
+  );
+
+  const price_total_rating = workspaceReviewsData.data.reduce(
+    (acc, item) => acc + Number(item.price_rating),
+    0
+  );
+
+  const wifi_average_rating =
+    wifi_total_rating / workspaceReviewsData.data.length;
+
+  const space_average_rating =
+    wifi_total_rating / workspaceReviewsData.data.length;
+
+  const price_average_rating =
+    wifi_total_rating / workspaceReviewsData.data.length;
+
+  const spaceReviewClassName = convertToProgressBar(space_total_rating);
+  const wifiReviewClassName = convertToProgressBar(wifi_average_rating);
+  const priceReviewClassName = convertToProgressBar(price_total_rating);
+
+  const slicedImage = workspaceDetailsData.data.workspace_images.slice(
+    0,
+    Math.min(3, workspaceDetailsData.data.workspace_images.length)
+  );
+
+  const handleClose = () => {
+    setIsPopupPhotoGallery(false);
+  };
+  const handleOpen = () => {
+    setIsPopupPhotoGallery(true);
   };
 
-  const spaceReviewClassName = convertToProgressBar(4.8);
-  const wifiReviewClassName = convertToProgressBar(4);
-  const priceReviewClassName = convertToProgressBar(3);
   return (
     <div className="text-gray-950">
       <Navbar />
       {/* Workspace detail */}
       <div className="mt-20 mx-10">
         <div className="flex gap-4 flex-col">
-          <h1 className="text-left font-bold text-4xl">HDC Workspace 3</h1>
-          <h2 className="text-left ml-4 text-xl">So 2 Dinh Liet, Hoan Kiem</h2>
+          <h1 className="text-left font-bold text-4xl">
+            {workspaceDetailsData.data.name}
+          </h1>
+          <h2 className="text-left ml-4 text-xl">
+            {workspaceDetailsData.data.address}
+          </h2>
           <div className="flex gap-2">
-            <img
-              className="w-72 h-72 rounded-2xl"
-              src="https://s3-alpha-sig.figma.com/img/15bc/ba33/9de2c0ba4f15cb59b136fc2c98de59d0?Expires=1703462400&Signature=Kx2TotN8vrTxdCRFElnES390DgkW5Piruv3XMYH4Une-KngeXmXWvQogHcdXecRdhKegVDUR5XmJn255JYZyUj6aqPWE7HM31UnQqfkfyqN57dncMlL~GiG8WtWKc9z~ojaVTUQnLP9P8Mk7D5HV2NRef2DlPBcqnRSYVzAWSm1TZzahxudPUdeVuKUqovpRfS-4lQEH1717CHt0HfGrXaLSMDITCSzK98759cdbQqMwfR8VKHRw1Vv0FhDu-z4KKkl8OEb767VKI6RGadR051BZOpR5nWBAgKb11xFLw5YBl2lwe-23qm60WDo1infTdqFs6smtxZF4u~TOf~c7uQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-              alt="Workspace inside"
-            />
-            <img
-              className="w-72 h-72 rounded-2xl"
-              src="https://s3-alpha-sig.figma.com/img/15bc/ba33/9de2c0ba4f15cb59b136fc2c98de59d0?Expires=1703462400&Signature=Kx2TotN8vrTxdCRFElnES390DgkW5Piruv3XMYH4Une-KngeXmXWvQogHcdXecRdhKegVDUR5XmJn255JYZyUj6aqPWE7HM31UnQqfkfyqN57dncMlL~GiG8WtWKc9z~ojaVTUQnLP9P8Mk7D5HV2NRef2DlPBcqnRSYVzAWSm1TZzahxudPUdeVuKUqovpRfS-4lQEH1717CHt0HfGrXaLSMDITCSzK98759cdbQqMwfR8VKHRw1Vv0FhDu-z4KKkl8OEb767VKI6RGadR051BZOpR5nWBAgKb11xFLw5YBl2lwe-23qm60WDo1infTdqFs6smtxZF4u~TOf~c7uQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-              alt="Workspace inside"
-            />
-            <img
-              className="w-72 h-72 rounded-2xl"
-              src="https://s3-alpha-sig.figma.com/img/15bc/ba33/9de2c0ba4f15cb59b136fc2c98de59d0?Expires=1703462400&Signature=Kx2TotN8vrTxdCRFElnES390DgkW5Piruv3XMYH4Une-KngeXmXWvQogHcdXecRdhKegVDUR5XmJn255JYZyUj6aqPWE7HM31UnQqfkfyqN57dncMlL~GiG8WtWKc9z~ojaVTUQnLP9P8Mk7D5HV2NRef2DlPBcqnRSYVzAWSm1TZzahxudPUdeVuKUqovpRfS-4lQEH1717CHt0HfGrXaLSMDITCSzK98759cdbQqMwfR8VKHRw1Vv0FhDu-z4KKkl8OEb767VKI6RGadR051BZOpR5nWBAgKb11xFLw5YBl2lwe-23qm60WDo1infTdqFs6smtxZF4u~TOf~c7uQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-              alt="Workspace inside"
-            />
-            <div className="w-72 h-72 rounded-2xl flex justify-center items-center p-4 gap-3 bg-slate-200 hover:bg-slate-300 hover:cursor-pointer">
-              <p className="font-bold text-xl">Xem thêm</p>
-            </div>
+            {slicedImage.map((img, index) => (
+              <img
+                key={index}
+                className="w-72 h-72 rounded-2xl"
+                src={`${img.image_url}`}
+                alt="Workspace image"
+              />
+            ))}
+            {workspaceDetailsData.data.workspace_images.length > 3 ? (
+              <div
+                className="w-72 h-72 rounded-2xl flex justify-center items-center p-4 gap-3 bg-slate-200 hover:bg-slate-300 hover:cursor-pointer"
+                onClick={handleOpen}
+              >
+                <p className="font-bold text-xl">Xem thêm</p>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -57,7 +149,9 @@ function Review() {
             <div className="border-[1px] border-gray-700 w-14"></div>
             <div className="flex justify-center">
               <div className="flex justify-center items-center w-24 h-24 rounded-lg bg-cyan-500 mr-2">
-                <span className="text-white text-6xl font-semibold">4.6</span>
+                <span className="text-white text-6xl font-semibold">
+                  {workspaceDetailsData.data.average_rating}
+                </span>
               </div>
               <div className="flex flex-col h-24 justify-evenly">
                 <div className="font-bold text-2xl">Tốt</div>
@@ -74,7 +168,9 @@ function Review() {
                 ></div>
               </div>
               <div>
-                <span className="font-medium text-base">4.8/5</span>
+                <span className="font-medium text-base">
+                  {space_total_rating}/5
+                </span>
               </div>
             </div>
 
@@ -87,7 +183,9 @@ function Review() {
                 ></div>
               </div>
               <div>
-                <span className="font-medium text-base">4/5</span>
+                <span className="font-medium text-base">
+                  {wifi_average_rating}/5
+                </span>
               </div>
             </div>
 
@@ -100,7 +198,9 @@ function Review() {
                 ></div>
               </div>
               <div>
-                <span className="font-medium text-base">3/5</span>
+                <span className="font-medium text-base">
+                  {price_average_rating}/5
+                </span>
               </div>
             </div>
           </div>
@@ -127,9 +227,7 @@ function Review() {
               </div>
             </div>
             <ul className="list-disc px-12">
-              <li>1.500.000/tháng (linh hoạt)</li>
-              <li>2.000.000/tháng (dành riêng)</li>
-              <li>100.000/ngày</li>
+              <li>{workspaceDetailsData.data.price}</li>
             </ul>
 
             <div className="flex gap-2 mt-3 items-center">
@@ -146,7 +244,9 @@ function Review() {
                 />
               </svg>
               <div>
-                <span>8:00 - 23:00</span>
+                <span>
+                  {`${workspaceDetailsData.data.opening_hour} - ${workspaceDetailsData.data.closing_hour}`}
+                </span>
               </div>
             </div>
 
@@ -164,7 +264,7 @@ function Review() {
                 />
               </svg>
               <div>
-                <span>0912 345 678</span>
+                <span>{workspaceDetailsData.data.phone_number}</span>
               </div>
             </div>
 
@@ -182,7 +282,13 @@ function Review() {
                 />
               </svg>
               <div>
-                <span>Đông đúc</span>
+                <span>
+                  {workspaceDetailsData.data.status === "0"
+                    ? "Đông đúc"
+                    : workspaceDetailsData.data.status === "1"
+                    ? "Bình thường"
+                    : "Vắng vẻ"}
+                </span>
               </div>
             </div>
           </div>
@@ -196,63 +302,39 @@ function Review() {
         </div>
         {/* Service */}
         <div className="flex justify-center items-center w-full gap-28 mt-4">
-          <div>
-            <div className="flex justify-center w-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="35"
-                height="35"
-                viewBox="0 0 35 35"
-                fill="none"
-              >
-                <path
-                  d="M30.0781 28.9843V6.01553H24.0625V0.888916L6.01562 4.00043V28.9843H1.09375V31.1718H7.03418L24.0625 33.5205V8.20303H27.8906V31.1718H33.9062V28.9843H30.0781ZM21.875 31.0106L8.20312 29.1248V5.84312L21.875 3.48623V31.0106Z"
-                  fill="#44ADB4"
-                />
-                <path
-                  d="M17.5 15.8594H19.6875V20.2344H17.5V15.8594Z"
-                  fill="#44ADB4"
-                />
-              </svg>
-            </div>
-            <span>Phòng riêng</span>
-          </div>
+          {workspaceDetailsData.data.services.map((item) => {
+            console.log(item);
+            switch (item.service_name) {
+              case "Điều hoà":
+                return (
+                  <div>
+                    <div className="flex justify-center w-full">
+                      {iconSet["airConditioner"]}
+                    </div>
+                    <span>Điều hòa</span>
+                  </div>
+                );
 
-          <div>
-            <div className="flex justify-center w-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="36"
-                height="35"
-                viewBox="0 0 36 35"
-                fill="none"
-              >
-                <path
-                  d="M19.7869 16.0417H15.1202V10.2083H19.7869C20.5604 10.2083 21.3023 10.5156 21.8493 11.0626C22.3962 11.6096 22.7035 12.3515 22.7035 13.125C22.7035 13.8985 22.3962 14.6404 21.8493 15.1874C21.3023 15.7344 20.5604 16.0417 19.7869 16.0417ZM19.4952 4.375H9.28687V30.625H15.1202V21.875H19.4952C21.8158 21.875 24.0414 20.9531 25.6824 19.3122C27.3233 17.6712 28.2452 15.4456 28.2452 13.125C28.2452 8.28333 24.3223 4.375 19.4952 4.375Z"
-                  fill="#44ADB4"
-                />
-              </svg>
-            </div>
-
-            <span>Chỗ để xe</span>
-          </div>
-          <div>
-            <div className="flex justify-center w-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="36"
-                height="35"
-                viewBox="0 0 36 35"
-                fill="none"
-              >
-                <path
-                  d="M29.605 4.375H12.105C11.8149 4.375 11.5367 4.49023 11.3316 4.69535C11.1265 4.90047 11.0112 5.17867 11.0112 5.46875V10.9375H5.54248C5.2524 10.9375 4.9742 11.0527 4.76908 11.2579C4.56396 11.463 4.44873 11.7412 4.44873 12.0312V29.5312C4.44873 29.8213 4.56396 30.0995 4.76908 30.3046C4.9742 30.5098 5.2524 30.625 5.54248 30.625H23.0425C23.3326 30.625 23.6108 30.5098 23.8159 30.3046C24.021 30.0995 24.1362 29.8213 24.1362 29.5312V24.0625H29.605C29.8951 24.0625 30.1733 23.9473 30.3784 23.7421C30.5835 23.537 30.6987 23.2588 30.6987 22.9688V5.46875C30.6987 5.17867 30.5835 4.90047 30.3784 4.69535C30.1733 4.49023 29.8951 4.375 29.605 4.375ZM21.9487 28.4375H6.63623V13.125H21.9487V28.4375ZM28.5112 21.875H24.1362V12.0312C24.1362 11.7412 24.021 11.463 23.8159 11.2579C23.6108 11.0527 23.3326 10.9375 23.0425 10.9375H13.1987V6.5625H28.5112V21.875Z"
-                  fill="#44ADB4"
-                />
-              </svg>
-            </div>
-            <span>Điều hòa</span>
-          </div>
+              case "Phòng riêng":
+                return (
+                  <div>
+                    <div className="flex justify-center w-full">
+                      {iconSet["privateRoom"]}
+                    </div>
+                    <span>Phòng riêng</span>
+                  </div>
+                );
+              case "Chỗ để xe":
+                return (
+                  <div>
+                    <div className="flex justify-center w-full">
+                      {iconSet["parking"]}
+                    </div>
+                    <span>Chỗ để xe</span>
+                  </div>
+                );
+            }
+          })}
         </div>
 
         {/* Reivew  title*/}
@@ -280,50 +362,68 @@ function Review() {
           </div>
         </div>
         {/* Review content*/}
-        <div className="flex text-left gap-6">
-          <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="48"
-              height="48"
-              viewBox="0 0 48 48"
-              fill="none"
-            >
-              <path
-                d="M11 39C14 37 18 36 20 34C22 32 16 32 16 22C16 12 24 12 24 12C24 12 32 12 32 22C32 32 26 32 28 34C30 36 34 37 37 39"
-                stroke="#44ADB4"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"
-                stroke="#44ADB4"
-                stroke-width="1.5"
-              />
-            </svg>
-          </div>
-          <div className="flex flex-col gap-3">
+        {/* TODO */}
+        {/* 
+        
+  Nút sắp xếp hoạt động 
+  Sau đó làm pagination sao cho nó có thể chạy được.
+
+        */}
+        {workspaceReviewsData.data.map((review) => (
+          <div className="flex text-left gap-6 my-4">
             <div>
-              <h4 className="font-bold">Uong Hong Minh</h4>
-              <h5>17/10/2023</h5>
+              <img
+                src={review.user.avatar_url}
+                alt="avatar"
+                className="w-20 h-12 rounded-full"
+              />
             </div>
-            <div className="flex items-center gap-4">
-              <Rating name="read-only" value="3" readOnly />
-              <span>3.0</span>
-            </div>
-            <div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia,
-              cumque cum rem natus optio porro magni, animi repellat officiis
-              ipsam aliquid sapiente laboriosam corrupti dolore quo sit,
-              corporis minima? Natus.
+            <div className="flex flex-col gap-3">
+              <div>
+                <h4 className="font-bold">{review.user.username}</h4>
+                <h5>17/10/2023</h5>
+              </div>
+              <div className="flex items-center gap-4">
+                <Rating
+                  name="read-only"
+                  value={review.average_rating}
+                  readOnly
+                />
+                <span>{review.average_rating}</span>
+              </div>
+              <div>{review.comment}</div>
             </div>
           </div>
-        </div>
+        ))}
+      </div>
+
+      <div>
+        <Dialog
+          open={isPopupPhotoGallery}
+          onClose={handleClose}
+          maxWidth={"md"}
+          className="flex justify-center"
+        >
+          <DialogContent>
+            <StandardImageList
+              itemData={workspaceDetailsData.data.workspace_images}
+            />
+          </DialogContent>
+        </Dialog>
+
+        {/* 
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 2 }}
+          open={isPopupPhotoGallery}
+          onClick={handleClose}
+        >
+          <StandardImageList
+            itemData={workspaceDetailsData.data.workspace_images}
+          />
+        </Backdrop> */}
       </div>
     </div>
   );
 }
 
-export default Review;
+export default WorkspaceDetails;

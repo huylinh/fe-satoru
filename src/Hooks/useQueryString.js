@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
-import { useSearchParams, createSearchParams } from 'react-router-dom';
+import { useMemo } from "react";
+import { useSearchParams, createSearchParams } from "react-router-dom";
 
 const useQueryString = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const searchParamsObject = useMemo(() => {
     const searchParamsObject = {};
     [...searchParams].forEach(([key, value]) => {
@@ -15,13 +16,11 @@ const useQueryString = () => {
         return;
       }
 
-      if(key === 'area' || key === 'status' || key === 'service'){
+      if (key === "area" || key === "status" || key === "service") {
         searchParamsObject[key] = [value];
-      }else {
+      } else {
         searchParamsObject[key] = value;
-
       }
-
     });
     return searchParamsObject;
   }, [searchParams]);
