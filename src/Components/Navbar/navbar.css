@@ -22,7 +22,7 @@
 
 .right-section .login-btn {
   background-color: transparent;
-  color: black; 
+  color: black;
   border: 2px solid #ddd;
 }
 
@@ -32,7 +32,7 @@
 
 .right-section .register-btn {
   background-color: #44adb4;
-  color: white; 
+  color: white;
   border: none;
 }
 
@@ -47,5 +47,5 @@
   position: absolute;
   top: 0;
   left: 43vw;
-  z-index: 9999;
+  z-index: 1;
 }
