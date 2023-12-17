@@ -2,18 +2,11 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../../Components/Navbar/Navbar";
 import MenuItem from "@mui/material/MenuItem";
-import Backdrop from "@mui/material/Backdrop";
-import Rating from "@mui/material/Rating";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import CircularProgress from "@mui/material/CircularProgress";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-
 import {
   getWorkspaceDetailsService,
   getWorkspaceReviewsService,
@@ -23,13 +16,11 @@ import { Box } from "@mui/material";
 import iconSet from "../../assets/icon/iconSet";
 import StandardImageList from "../../Components/StandardImageList/StandardImageList";
 
-const convertToProgressBar = (star) => {
-  const progressWidth = Math.round((star / 5) * 320);
-  return progressWidth;
-};
+import ReviewProgressBar from "../../Components/ReviewProgressBar/ReviewProgressBar";
+import Reviews from "../../Components/Reviews/Reviews";
 
 function WorkspaceDetails() {
-  const [reviewSortOpt, setReviewSortOpt] = useState();
+  const [reviewSortOpt, setReviewSortOpt] = useState(0); // 0: latest, oldest
   const [isPopupPhotoGallery, setIsPopupPhotoGallery] = useState(false);
 
   const workspaceParams = useParams();
@@ -61,52 +52,22 @@ function WorkspaceDetails() {
       </Box>
     );
   }
-  // console.log(workspaceDetailsData.data);
-  // console.log(workspaceReviewsData.data);
-
-  const handleChange = (event) => {
-    setReviewSortOpt(event.target.value);
-  };
-
-  //
-  const wifi_total_rating = workspaceReviewsData.data.reduce(
-    (acc, item) => acc + Number(item.wifi_rating),
-    0
-  );
-
-  const space_total_rating = workspaceReviewsData.data.reduce(
-    (acc, item) => acc + Number(item.space_rating),
-    0
-  );
-
-  const price_total_rating = workspaceReviewsData.data.reduce(
-    (acc, item) => acc + Number(item.price_rating),
-    0
-  );
-
-  const wifi_average_rating =
-    wifi_total_rating / workspaceReviewsData.data.length;
-
-  const space_average_rating =
-    wifi_total_rating / workspaceReviewsData.data.length;
-
-  const price_average_rating =
-    wifi_total_rating / workspaceReviewsData.data.length;
-
-  const spaceReviewClassName = convertToProgressBar(space_total_rating);
-  const wifiReviewClassName = convertToProgressBar(wifi_average_rating);
-  const priceReviewClassName = convertToProgressBar(price_total_rating);
 
   const slicedImage = workspaceDetailsData.data.workspace_images.slice(
     0,
     Math.min(3, workspaceDetailsData.data.workspace_images.length)
   );
 
+  // see more photos
   const handleClose = () => {
     setIsPopupPhotoGallery(false);
   };
   const handleOpen = () => {
     setIsPopupPhotoGallery(true);
+  };
+
+  const handleChange = (e) => {
+    setReviewSortOpt(e.target.value);
   };
 
   return (
@@ -147,62 +108,18 @@ function WorkspaceDetails() {
           <div className="w-[599px] h-[362px] p-6 rounded-2xl drop-shadow-sm border-2 border-satoru-blue">
             <h3 className="text-satoru-blue font-bold">Đánh giá</h3>
             <div className="border-[1px] border-gray-700 w-14"></div>
-            <div className="flex justify-center">
-              <div className="flex justify-center items-center w-24 h-24 rounded-lg bg-cyan-500 mr-2">
-                <span className="text-white text-6xl font-semibold">
-                  {workspaceDetailsData.data.average_rating}
-                </span>
+            {workspaceReviewsData.data.length == 0 ? (
+              <div className="w-full h-full flex justify-center items-center">
+                <div className="font-md text-lg w-3/4 h-3/4  rounded flex justify-center items-center  ">
+                  <span>Chưa có đánh giá</span>
+                </div>
               </div>
-              <div className="flex flex-col h-24 justify-evenly">
-                <div className="font-bold text-2xl">Tốt</div>
-                <div className="text-lg">/5 (5 stars)</div>
-              </div>
-            </div>
-            {/* progress bar */}
-            <div className="p-4 flex items-center gap-4">
-              <span className="w-24 font-medium text-base">Không gian</span>
-              <div className="inline-block w-80 h-5 bg-slate-200 rounded-lg">
-                <div
-                  className="  bg-satoru-blue h-5 rounded-lg"
-                  style={{ width: `${spaceReviewClassName}px` }}
-                ></div>
-              </div>
-              <div>
-                <span className="font-medium text-base">
-                  {space_total_rating}/5
-                </span>
-              </div>
-            </div>
-
-            <div className="p-4 flex items-center gap-4">
-              <span className="w-24 font-medium text-base">Wifi</span>
-              <div className="inline-block w-80 h-5 bg-slate-200 rounded-lg">
-                <div
-                  className="  bg-satoru-blue h-5 rounded-lg"
-                  style={{ width: `${wifiReviewClassName}px` }}
-                ></div>
-              </div>
-              <div>
-                <span className="font-medium text-base">
-                  {wifi_average_rating}/5
-                </span>
-              </div>
-            </div>
-
-            <div className="p-4 flex items-center gap-4">
-              <span className="w-24 font-medium text-base">Giá</span>
-              <div className="inline-block w-80 h-5 bg-slate-200 rounded-lg">
-                <div
-                  className="  bg-satoru-blue h-5 rounded-lg"
-                  style={{ width: `${priceReviewClassName}px` }}
-                ></div>
-              </div>
-              <div>
-                <span className="font-medium text-base">
-                  {price_average_rating}/5
-                </span>
-              </div>
-            </div>
+            ) : (
+              <ReviewProgressBar
+                workspaceAvgRating={workspaceDetailsData.data.average_rating}
+                reviews={workspaceReviewsData.data}
+              />
+            )}
           </div>
           {/* Info card */}
           <div className="w-[599px] h-[362px] p-6 rounded-2xl border-2 drop-shadow-sm border-satoru-blue text-lg">
@@ -303,7 +220,6 @@ function WorkspaceDetails() {
         {/* Service */}
         <div className="flex justify-center items-center w-full gap-28 mt-4">
           {workspaceDetailsData.data.services.map((item) => {
-            console.log(item);
             switch (item.service_name) {
               case "Điều hoà":
                 return (
@@ -345,14 +261,14 @@ function WorkspaceDetails() {
             <FormControl sx={{ minWidth: 120 }}>
               <Select
                 sx={{ width: 200, paddingLeft: 2, paddingRight: 8 }}
-                defaultValue={10}
+                defaultValue={0}
                 value={reviewSortOpt}
                 onChange={handleChange}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
-                <MenuItem value={10}>Gần đây</MenuItem>
-                <MenuItem value={20}>Cũ nhất</MenuItem>
+                <MenuItem value={0}>Gần đây</MenuItem>
+                <MenuItem value={1}>Cũ nhất</MenuItem>
               </Select>
             </FormControl>
             <button className="font-sans rounded-lg font-bold text-white px-6 py-4 bg-satoru-blue">
@@ -362,65 +278,28 @@ function WorkspaceDetails() {
           </div>
         </div>
         {/* Review content*/}
-        {/* TODO */}
-        {/* 
-        
-  Nút sắp xếp hoạt động 
-  Sau đó làm pagination sao cho nó có thể chạy được.
-
-        */}
-        {workspaceReviewsData.data.map((review) => (
-          <div className="flex text-left gap-6 my-4">
-            <div>
-              <img
-                src={review.user.avatar_url}
-                alt="avatar"
-                className="w-20 h-12 rounded-full"
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <div>
-                <h4 className="font-bold">{review.user.username}</h4>
-                <h5>17/10/2023</h5>
-              </div>
-              <div className="flex items-center gap-4">
-                <Rating
-                  name="read-only"
-                  value={review.average_rating}
-                  readOnly
-                />
-                <span>{review.average_rating}</span>
-              </div>
-              <div>{review.comment}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div>
-        <Dialog
-          open={isPopupPhotoGallery}
-          onClose={handleClose}
-          maxWidth={"md"}
-          className="flex justify-center"
-        >
-          <DialogContent>
-            <StandardImageList
-              itemData={workspaceDetailsData.data.workspace_images}
-            />
-          </DialogContent>
-        </Dialog>
-
-        {/* 
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 2 }}
-          open={isPopupPhotoGallery}
-          onClick={handleClose}
-        >
-          <StandardImageList
-            itemData={workspaceDetailsData.data.workspace_images}
+        {workspaceReviewsData.data.length == 0 ? (
+          <div>Chưa có đánh giá</div>
+        ) : (
+          <Reviews
+            workspaceReviewsData={workspaceReviewsData}
+            reviewSortOpt={reviewSortOpt}
           />
-        </Backdrop> */}
+        )}
+        <div>
+          <Dialog
+            open={isPopupPhotoGallery}
+            onClose={handleClose}
+            maxWidth={"md"}
+            className="flex justify-center"
+          >
+            <DialogContent>
+              <StandardImageList
+                itemData={workspaceDetailsData.data.workspace_images}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </div>
   );
