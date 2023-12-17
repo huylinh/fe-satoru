@@ -2,18 +2,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../../Components/Navbar/Navbar";
 import MenuItem from "@mui/material/MenuItem";
-import Backdrop from "@mui/material/Backdrop";
 import Rating from "@mui/material/Rating";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import CircularProgress from "@mui/material/CircularProgress";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-
+import Pagination from "@mui/material/Pagination";
 import {
   getWorkspaceDetailsService,
   getWorkspaceReviewsService,
@@ -22,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Box } from "@mui/material";
 import iconSet from "../../assets/icon/iconSet";
 import StandardImageList from "../../Components/StandardImageList/StandardImageList";
+import { format, parseISO } from "date-fns";
 
 const convertToProgressBar = (star) => {
   const progressWidth = Math.round((star / 5) * 320);
@@ -29,8 +25,9 @@ const convertToProgressBar = (star) => {
 };
 
 function WorkspaceDetails() {
-  const [reviewSortOpt, setReviewSortOpt] = useState();
+  const [reviewSortOpt, setReviewSortOpt] = useState(0); // 0: latest, oldest
   const [isPopupPhotoGallery, setIsPopupPhotoGallery] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const workspaceParams = useParams();
 
@@ -61,12 +58,6 @@ function WorkspaceDetails() {
       </Box>
     );
   }
-  // console.log(workspaceDetailsData.data);
-  // console.log(workspaceReviewsData.data);
-
-  const handleChange = (event) => {
-    setReviewSortOpt(event.target.value);
-  };
 
   //
   const wifi_total_rating = workspaceReviewsData.data.reduce(
@@ -83,31 +74,62 @@ function WorkspaceDetails() {
     (acc, item) => acc + Number(item.price_rating),
     0
   );
+  // workspace details rating average
+  const wifi_average_rating = (
+    wifi_total_rating / workspaceReviewsData.data.length
+  ).toFixed(1);
 
-  const wifi_average_rating =
-    wifi_total_rating / workspaceReviewsData.data.length;
+  const space_average_rating = (
+    space_total_rating / workspaceReviewsData.data.length
+  ).toFixed(1);
 
-  const space_average_rating =
-    wifi_total_rating / workspaceReviewsData.data.length;
+  const price_average_rating = (
+    price_total_rating / workspaceReviewsData.data.length
+  ).toFixed(1);
 
-  const price_average_rating =
-    wifi_total_rating / workspaceReviewsData.data.length;
-
-  const spaceReviewClassName = convertToProgressBar(space_total_rating);
+  const spaceReviewClassName = convertToProgressBar(space_average_rating);
   const wifiReviewClassName = convertToProgressBar(wifi_average_rating);
-  const priceReviewClassName = convertToProgressBar(price_total_rating);
+  const priceReviewClassName = convertToProgressBar(price_average_rating);
 
   const slicedImage = workspaceDetailsData.data.workspace_images.slice(
     0,
     Math.min(3, workspaceDetailsData.data.workspace_images.length)
   );
 
+  // see more photos
   const handleClose = () => {
     setIsPopupPhotoGallery(false);
   };
   const handleOpen = () => {
     setIsPopupPhotoGallery(true);
   };
+
+  const handleChange = (e) => {
+    setReviewSortOpt(e.target.value);
+  };
+  //handle sort comment
+  if (reviewSortOpt == 0) {
+    workspaceReviewsData.data.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+  } else {
+    workspaceReviewsData.data.sort(
+      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+    );
+  }
+
+  // Pagination
+  const paginationCount = Math.ceil(workspaceReviewsData.data.length / 10);
+  console.log(paginationCount);
+  const handlePaginationChange = (e, page) => {
+    setCurrentPage(page - 1);
+  };
+
+  const currentReviews = workspaceReviewsData.data.slice(
+    10 * currentPage,
+    Math.min(10 * (currentPage + 1), workspaceReviewsData.data.length)
+  );
+  console.log(currentReviews);
 
   return (
     <div className="text-gray-950">
@@ -169,7 +191,7 @@ function WorkspaceDetails() {
               </div>
               <div>
                 <span className="font-medium text-base">
-                  {space_total_rating}/5
+                  {space_average_rating}/5
                 </span>
               </div>
             </div>
@@ -303,7 +325,6 @@ function WorkspaceDetails() {
         {/* Service */}
         <div className="flex justify-center items-center w-full gap-28 mt-4">
           {workspaceDetailsData.data.services.map((item) => {
-            console.log(item);
             switch (item.service_name) {
               case "Điều hoà":
                 return (
@@ -345,14 +366,14 @@ function WorkspaceDetails() {
             <FormControl sx={{ minWidth: 120 }}>
               <Select
                 sx={{ width: 200, paddingLeft: 2, paddingRight: 8 }}
-                defaultValue={10}
+                defaultValue={0}
                 value={reviewSortOpt}
                 onChange={handleChange}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
-                <MenuItem value={10}>Gần đây</MenuItem>
-                <MenuItem value={20}>Cũ nhất</MenuItem>
+                <MenuItem value={0}>Gần đây</MenuItem>
+                <MenuItem value={1}>Cũ nhất</MenuItem>
               </Select>
             </FormControl>
             <button className="font-sans rounded-lg font-bold text-white px-6 py-4 bg-satoru-blue">
@@ -369,21 +390,21 @@ function WorkspaceDetails() {
   Sau đó làm pagination sao cho nó có thể chạy được.
 
         */}
-        {workspaceReviewsData.data.map((review) => (
+        {currentReviews.map((review) => (
           <div className="flex text-left gap-6 my-4">
             <div>
               <img
                 src={review.user.avatar_url}
                 alt="avatar"
-                className="w-20 h-12 rounded-full"
+                className="w-12 h-12 rounded-full mt-2"
               />
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 w-11/12 bg-slate-100 rounded-lg p-6">
               <div>
                 <h4 className="font-bold">{review.user.username}</h4>
-                <h5>17/10/2023</h5>
+                <h5>{format(parseISO(review.created_at), "dd-MM-yyyy")}</h5>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 ">
                 <Rating
                   name="read-only"
                   value={review.average_rating}
@@ -395,6 +416,12 @@ function WorkspaceDetails() {
             </div>
           </div>
         ))}
+        <Pagination
+          className="flex justify-end"
+          count={paginationCount}
+          color="primary"
+          onChange={handlePaginationChange}
+        />
       </div>
 
       <div>
@@ -410,17 +437,6 @@ function WorkspaceDetails() {
             />
           </DialogContent>
         </Dialog>
-
-        {/* 
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 2 }}
-          open={isPopupPhotoGallery}
-          onClick={handleClose}
-        >
-          <StandardImageList
-            itemData={workspaceDetailsData.data.workspace_images}
-          />
-        </Backdrop> */}
       </div>
     </div>
   );
