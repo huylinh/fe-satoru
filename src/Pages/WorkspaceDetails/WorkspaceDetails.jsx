@@ -19,6 +19,8 @@ import StandardImageList from "../../Components/StandardImageList/StandardImageL
 import ReviewProgressBar from "../../Components/ReviewProgressBar/ReviewProgressBar";
 import Reviews from "../../Components/Reviews/Reviews";
 
+import { formatNumber } from "../../Utils/constant.js";
+
 function WorkspaceDetails() {
   const [reviewSortOpt, setReviewSortOpt] = useState(0); // 0: latest, oldest
   const [isPopupPhotoGallery, setIsPopupPhotoGallery] = useState(false);
@@ -71,10 +73,14 @@ function WorkspaceDetails() {
   };
 
   return (
-    <div className="text-gray-950">
+    <div className="text-gray-950 text-left">
       <Navbar />
       {/* Workspace detail */}
-      <div className="mt-20 mx-10">
+      <button className="rounded-lg h-12 mt-5"
+          style={{ 'backgroundColor': '#113437', 'color': 'white', 'fontSize': '20px'}}>
+          Trở lại
+      </button>
+      <div className="mt-16 ml-28 mr-10">
         <div className="flex gap-4 flex-col">
           <h1 className="text-left font-bold text-4xl">
             {workspaceDetailsData.data.name}
@@ -86,7 +92,7 @@ function WorkspaceDetails() {
             {slicedImage.map((img, index) => (
               <img
                 key={index}
-                className="w-72 h-72 rounded-2xl"
+                className="w-72 h-72 rounded-2xl object-cover"
                 src={`${img.image_url}`}
                 alt="Workspace image"
               />
@@ -144,7 +150,7 @@ function WorkspaceDetails() {
               </div>
             </div>
             <ul className="list-disc px-12">
-              <li>{workspaceDetailsData.data.price}</li>
+              <li>{formatNumber(parseInt(workspaceDetailsData.data.price)) + ' VND'}</li>
             </ul>
 
             <div className="flex gap-2 mt-3 items-center">
@@ -199,7 +205,7 @@ function WorkspaceDetails() {
                 />
               </svg>
               <div>
-                <span>
+                <span className="font-semibold">
                   {workspaceDetailsData.data.status === "0"
                     ? "Đông đúc"
                     : workspaceDetailsData.data.status === "1"
@@ -219,12 +225,12 @@ function WorkspaceDetails() {
         </div>
         {/* Service */}
         <div className="flex justify-center items-center w-full gap-28 mt-4">
-          {workspaceDetailsData.data.services.map((item) => {
+          {workspaceDetailsData.data.services.map((item, index) => {
             switch (item.service_name) {
               case "Điều hoà":
                 return (
                   <div>
-                    <div className="flex justify-center w-full">
+                    <div key={index} className="flex justify-center w-full">
                       {iconSet["airConditioner"]}
                     </div>
                     <span>Điều hòa</span>
@@ -234,7 +240,7 @@ function WorkspaceDetails() {
               case "Phòng riêng":
                 return (
                   <div>
-                    <div className="flex justify-center w-full">
+                    <div key={index} className="flex justify-center w-full">
                       {iconSet["privateRoom"]}
                     </div>
                     <span>Phòng riêng</span>
@@ -243,7 +249,7 @@ function WorkspaceDetails() {
               case "Chỗ để xe":
                 return (
                   <div>
-                    <div className="flex justify-center w-full">
+                    <div key={index} className="flex justify-center w-full">
                       {iconSet["parking"]}
                     </div>
                     <span>Chỗ để xe</span>

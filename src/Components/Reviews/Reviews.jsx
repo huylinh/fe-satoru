@@ -28,8 +28,11 @@ function Reviews({ workspaceReviewsData, reviewSortOpt }) {
   );
   return (
     <>
-      {currentReviews.map((review) => (
-        <div className="flex text-left gap-6 my-4">
+      {currentReviews.map((review, index) => (
+        <div 
+          className="flex text-left gap-6 my-4"
+          key={index}
+        >
           <div>
             <img
               src={review.user.avatar_url}

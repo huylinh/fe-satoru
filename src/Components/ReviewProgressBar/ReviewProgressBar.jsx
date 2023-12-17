@@ -45,7 +45,7 @@ function ReviewProgressBar({ workspaceAvgRating, reviews }) {
         </div>
       </div>
       {/* progress bar */}
-      <div className="p-4 flex items-center gap-4">
+      <div className="py-4 flex items-center gap-4">
         <span className="w-24 font-medium text-base">Không gian</span>
         <div className="inline-block w-80 h-5 bg-slate-200 rounded-lg">
           <div
@@ -60,7 +60,7 @@ function ReviewProgressBar({ workspaceAvgRating, reviews }) {
         </div>
       </div>
 
-      <div className="p-4 flex items-center gap-4">
+      <div className="py-4 flex items-center gap-4">
         <span className="w-24 font-medium text-base">Wifi</span>
         <div className="inline-block w-80 h-5 bg-slate-200 rounded-lg">
           <div
@@ -73,7 +73,7 @@ function ReviewProgressBar({ workspaceAvgRating, reviews }) {
         </div>
       </div>
 
-      <div className="p-4 flex items-center gap-4">
+      <div className="py-4 flex items-center gap-4">
         <span className="w-24 font-medium text-base">Giá</span>
         <div className="inline-block w-80 h-5 bg-slate-200 rounded-lg">
           <div
