@@ -6,14 +6,14 @@ import SellIcon from "@mui/icons-material/Sell";
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { formatNumber } from "../../Utils/constant.js";
+import {useNavigate} from "react-router-dom";
 
 const Workspace = ({ data }) => {
-  const handleClick = () => {
-    console.log(data);
-  };
+
+  const navigate = useNavigate()
 
   return (
-    <div className="wrap hover:cursor-pointer" onClick={handleClick}>
+    <div className="wrap hover:cursor-pointer" onClick={() => navigate(`/workspaces/${data.id}`)} >
       <div className="flex" style={{ gap: "16px" }}>
         <div className="image-container">
           <img src={data.image} className="image" alt="" />

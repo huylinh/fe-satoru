@@ -21,9 +21,9 @@ export default function useListWorkspaces() {
     const { page, limit } = queryString;
 
     const parseData = useCallback((data) => {
-        console.log(data)
         const workspaces = data?.data.map((item) => {
             return {
+                id:item.id,
                 name: item.name,
                 price: item.price,
                 opening_hour: item.opening_hour,
