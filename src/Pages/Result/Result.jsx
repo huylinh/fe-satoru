@@ -11,7 +11,7 @@ import Navbar from "../../Components/Navbar/Navbar.jsx";
 import Selector from "../../Components/Selector/Selector.jsx";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { LinearProgress, Pagination, Slider } from "@mui/material";
-import { areas, statuses, services, label, options, orders , formatNumber } from "../../Utils/constant.js";
+import { areas, statuses, services, label, options, orders, formatNumber } from "../../Utils/constant.js";
 import useListWorkspaces from "./useListWorkspaces.js";
 
 const Result = () => {
@@ -96,6 +96,10 @@ const Result = () => {
             ...queryString,
             ...filter,
             ...(nameString.length > 0 ? { name: nameString } : {}),
+            ...(selection === 1 && order === 1 ? { sort_price: 0 } : {}),
+            ...(selection === 1 && order === 2 ? { sort_price: 1 } : {}),
+            ...(selection === 2 && order === 1 ? { sort_rating: 0 } : {}),
+            ...(selection === 2 && order === 2 ? { sort_rating: 1 } : {}),
         };
         if (!Object.prototype.hasOwnProperty.call(filter, 'area') && Object.prototype.hasOwnProperty.call(queryString, 'area')) {
             delete params.area;
@@ -108,6 +112,12 @@ const Result = () => {
         }
         if (!(nameString.length > 0)) {
             delete params.name;
+        }
+        if (selection !== 1) {
+            delete params.sort_price;
+        }
+        if (selection !== 2) {
+            delete params.sort_rating;
         }
         setQueryString(params);
         window.scrollTo(0, 0);
@@ -238,11 +248,11 @@ const Result = () => {
                                 <div className="border-b-2 border-black"></div>
                                 <div className="font-bold texl-l">Giá</div>
                                 <p
-                                    style={{'color': '#44ADB4', 'font-size': '16px', 'font-weight': '400', 'margin': '10px 0px -5px 0'}}
-                                >{parseInt(filter?.price)  ?  formatNumber(parseInt(filter?.price)) + ' VND'  : "Miễn phí"}</p>
+                                    style={{ 'color': '#44ADB4', 'font-size': '16px', 'font-weight': '400', 'margin': '10px 0px -5px 0' }}
+                                >{parseInt(filter?.price) ? formatNumber(parseInt(filter?.price)) + ' VND' : "Miễn phí"}</p>
 
                                 <Slider
-                                    defaultValue={filter.price ? parseInt(filter.price) : 0 }
+                                    defaultValue={filter.price ? parseInt(filter.price) : 0}
                                     step={1000}
                                     max={max}
                                     style={{ 'color': '#44ADB4', 'padding': '0', 'margin-left': '8px' }}
@@ -283,7 +293,7 @@ const Result = () => {
                                 </div>
                                 {isLoading && <>
                                     <div className="w-100">
-                                        <LinearProgress className='mt-4 ml-10 progress-bar'  style={{ width: '300%' ,'margin-top':'50px'}}/>
+                                        <LinearProgress className='mt-4 ml-10 progress-bar' style={{ width: '300%', 'margin-top': '50px' }} />
                                     </div>
                                 </>}
                                 {isSuccess && listWorkspaces.map((item, index) => (
