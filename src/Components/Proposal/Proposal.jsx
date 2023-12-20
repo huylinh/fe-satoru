@@ -1,11 +1,12 @@
 import Rating from "@mui/material/Rating";
-import StarIcon from '@mui/icons-material/Star';
+import StarIcon from "@mui/icons-material/Star";
 import imageWorkspace1 from "../../assets/workspace1.jpg";
 import imageWorkspace2 from "../../assets/workspace2.jpg";
 import imageWorkspace3 from "../../assets/workspace3.jpg";
 import imageWorkspace4 from "../../assets/workspace4.jpg";
 import imageWorkspace5 from "../../assets/workspace5.jpg";
 import "./proposal.css";
+import { useNavigate } from "react-router";
 const Data = [
   {
     id: 1,
@@ -53,9 +54,13 @@ const List = () => {
   return (
     <section className="list container section">
       <div className="secTitle">
-        <h3 className="title" style={{ color: 'black',fontWeight: 'bold', fontSize: '24px'  }}>Đề xuất</h3>
+        <h3
+          className="title"
+          style={{ color: "black", fontWeight: "bold", fontSize: "24px" }}
+        >
+          Đề xuất
+        </h3>
       </div>
-
       <div className="secContent grid">
         {Data.map(({ id, imgSrc, name, description, location, star }) => {
           return (
