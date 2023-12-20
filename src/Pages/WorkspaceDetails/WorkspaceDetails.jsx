@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../Components/Navbar/Navbar";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -12,7 +12,7 @@ import {
   getWorkspaceReviewsService,
 } from "../../Services/workspaceDetailsService";
 import { useQuery } from "@tanstack/react-query";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import iconSet from "../../assets/icon/iconSet";
 import StandardImageList from "../../Components/StandardImageList/StandardImageList";
 
@@ -24,6 +24,8 @@ import { formatNumber } from "../../Utils/constant.js";
 function WorkspaceDetails() {
   const [reviewSortOpt, setReviewSortOpt] = useState(0); // 0: latest, oldest
   const [isPopupPhotoGallery, setIsPopupPhotoGallery] = useState(false);
+
+  const navigate = useNavigate();
 
   const workspaceParams = useParams();
 
@@ -76,10 +78,15 @@ function WorkspaceDetails() {
     <div className="text-gray-950 text-left">
       <Navbar />
       {/* Workspace detail */}
-      <button className="rounded-lg h-12 mt-5"
-          style={{ 'backgroundColor': '#113437', 'color': 'white', 'fontSize': '20px'}}>
-          Trở lại
-      </button>
+
+      <Button
+        variant="contained"
+        sx={{ mt: 2, ml: 2 }}
+        style={{ backgroundColor: "#113437", color: "white", fontSize: "14px" }}
+        onClick={() => navigate(-1)}
+      >
+        Trở lại
+      </Button>
       <div className="mt-16 ml-28 mr-10">
         <div className="flex gap-4 flex-col">
           <h1 className="text-left font-bold text-4xl">
@@ -150,7 +157,13 @@ function WorkspaceDetails() {
               </div>
             </div>
             <ul className="list-disc px-12">
-              <li>{formatNumber(parseInt(workspaceDetailsData.data.price)) + ' VND'}</li>
+              <li>
+                {formatNumber(parseInt(workspaceDetailsData.data.price_min)) +
+                  " VND"}{" "}
+                -{" "}
+                {formatNumber(parseInt(workspaceDetailsData.data.price_max)) +
+                  " VND"}
+              </li>
             </ul>
 
             <div className="flex gap-2 mt-3 items-center">
