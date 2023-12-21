@@ -1,11 +1,28 @@
-.filter-wrap{
-    width: 369px;
-    height: fit-content;
-    border : 1px solid black;
-    border-radius: 8px;
+.filter-wrap {
+  width: 369px;
+  height: fit-content;
+  border: 1px solid black;
+  border-radius: 8px;
 }
 
-.css-4jnixx-MuiStack-root>.MuiTextField-root{
-    min-width: 100px !important;
+.css-4jnixx-MuiStack-root > .MuiTextField-root {
+  min-width: 100px !important;
 }
 
+.css-160unip > .MuiTextField-root {
+  min-width: 100px !important;
+}
+
+.css-1a9jshs-MuiButtonBase-root-MuiChip-root {
+  background-color: #44adb4 !important;
+  color: white !important;
+}
+.MuiAutocomplete-listbox {
+  color: #44adb4;
+  & li[aria-selected="true"] {
+    font-weight: 600;
+    & svg {
+      color: #1890ff;
+    }
+  }
+}
