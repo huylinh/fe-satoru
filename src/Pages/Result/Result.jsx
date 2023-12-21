@@ -321,30 +321,6 @@ const Result = () => {
                                     </LocalizationProvider>
                                 </div>
 
-                                <div className="border-b-2 border-black"></div>
-                                <div>
-                                    <div className="font-bold texl-l mb-2">Kiểu địa điểm</div>
-                                    <div className="space-y-1">
-                                        {types.map((type, index) => (
-                                            <div key={index} className="flex gap-1 items-center">
-                                                <Checkbox
-                                                    {...label}
-                                                    value={index}
-                                                    checked={
-                                                        (filter.categories && filter.categories.includes(index + 1)) ||
-                                                        false
-                                                    }
-                                                    onChange={() =>
-                                                        handleCheckboxChange("categories", index + 1)
-                                                    }
-                                                    style={{color: "#44ADB4", padding: "0"}}
-                                                    size="small"
-                                                />
-                                                <div>{type} </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
 
                                 <div>
                                     <div className="font-bold texl-l mb-2">Khu vực</div>
@@ -426,6 +402,31 @@ const Result = () => {
                                     valueLabelDisplay="auto"
                                 />
 
+                                <div className="border-b-2 border-black"></div>
+                                <div>
+                                    <div className="font-bold texl-l mb-2">Kiểu địa điểm</div>
+                                    <div className="space-y-1">
+                                        {types.map((type, index) => (
+                                            <div key={index} className="flex gap-1 items-center">
+                                                <Checkbox
+                                                    {...label}
+                                                    value={index}
+                                                    checked={
+                                                        (filter.categories && filter.categories.includes(index + 1)) ||
+                                                        false
+                                                    }
+                                                    onChange={() =>
+                                                        handleCheckboxChange("categories", index + 1)
+                                                    }
+                                                    style={{color: "#44ADB4", padding: "0"}}
+                                                    size="small"
+                                                />
+                                                <div>{type} </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="border-b-2 border-black"></div>
                                 <div className="font-bold texl-l mb-2">Tình trạng</div>
                                 <div className="space-y-1">
                                     {statuses.map((status, index) => (
