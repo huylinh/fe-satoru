@@ -58,7 +58,7 @@ const Workspace = ({ data }) => {
                 <SellIcon></SellIcon>
               </div>
               <span>
-                Giá : <strong> {formatNumber(data.price)} VND/Ngày</strong>
+                Giá : <strong> {formatNumber(data.price_min)} - {formatNumber(data.price_max)} VND/Ngày</strong>
               </span>
             </div>
             <div className="flex gap-x-3">

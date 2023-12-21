@@ -16,7 +16,7 @@ const useQueryString = () => {
         return;
       }
 
-      if (key === "area" || key === "status" || key === "service") {
+      if (key === "area" || key === "status" || key === "service" || key ==="categories") {
         searchParamsObject[key] = [value];
       } else {
         searchParamsObject[key] = value;

@@ -25,7 +25,8 @@ export default function useListWorkspaces() {
             return {
                 id:item.id,
                 name: item.name,
-                price: item.price,
+                price_min: item.price_min,
+                price_max: item.price_max,
                 opening_hour: item.opening_hour,
                 closing_hour: item.closing_hour,
                 rating:item.average_rating ,
@@ -52,7 +53,6 @@ export default function useListWorkspaces() {
         enabled: !!page && !!limit,
     });
 
-    console.log(data?.workspaces)
 
     const handlePageChange = useCallback(
         (e, value) => {
