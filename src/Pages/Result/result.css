@@ -9,3 +9,16 @@
     min-width: 100px !important;
 }
 
+.css-1a9jshs-MuiButtonBase-root-MuiChip-root{
+    background-color: #44ADB4!important;
+    color: white!important;
+}
+.MuiAutocomplete-listbox{
+    color: #44ADB4;
+    & li[aria-selected='true'] {
+        font-weight: 600;
+        & svg {
+            color: #1890ff;
+        }
+    }
+}
