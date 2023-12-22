@@ -10,9 +10,15 @@ import Workspace from "../../Components/Workspace/Workspace.jsx";
 import Navbar from "../../Components/Navbar/Navbar.jsx";
 import Selector from "../../Components/Selector/Selector.jsx";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {Autocomplete, Button, LinearProgress, Pagination, Slider, TextField} from "@mui/material";
 import {
-
+    Autocomplete,
+    Button,
+    LinearProgress,
+    Pagination,
+    Slider,
+    TextField,
+} from "@mui/material";
+import {
     formatNumber,
     label,
     options,
@@ -67,17 +73,20 @@ const Result = () => {
             convertedFilter.area = queryString.area.map((item) => parseInt(item, 10));
         }
         if (convertedFilter.categories) {
-            convertedFilter.categories = queryString.categories.map((item) => parseInt(item, 10));
+            convertedFilter.categories = queryString.categories.map((item) =>
+                parseInt(item, 10)
+            );
         }
+
         setFilter({...convertedFilter});
-        setSelectedAreas({...convertedFilter.area})
+        setSelectedAreas({...convertedFilter.area});
 
         if (convertedFilter.area) {
-            const defaultValues = getDefaultValues({...convertedFilter.area}, topAreas);
-            setDefaultAreas(defaultValues)
+            const defaultValues = getDefaultValues(
+                {...convertedFilter.area}, topAreas);
+            setDefaultAreas(defaultValues);
         }
     }, []);
-
     const handleChange = (key, value) => {
         setFilter({...filter, [key]: value});
         setPrice(value);
@@ -173,10 +182,7 @@ const Result = () => {
     const handle = (e, newValue) => {
 
         if (newValue.length === 1 && selectedAreas.length === 0) {
-            handleCheckboxChange('area', newValue[0].type);
-            setSelectedAreas(newValue);
-        } else if (newValue.length === 1 && selectedAreas.length !== 2) {
-            handleCheckboxChange('area', newValue[0].type)
+            handleCheckboxChange("area", newValue[0].type);
             setSelectedAreas(newValue);
         } else {
             const findChangedItem = (prevValue, newValue) => {
@@ -196,32 +202,32 @@ const Result = () => {
                     }
                 } else {
                     if (newValue.length === 0) {
-                        return topAreas.find(area => area.type === selectedAreas[0]);
+                        return topAreas.find((area) => area.type === selectedAreas[0]);
                     }
 
-                    for (const key in newValue) {
-                        if (Object.prototype.hasOwnProperty.call(newValue, key) && !Object.prototype.hasOwnProperty.call(prevValue, key)) {
-                            return newValue[key];
-                        }
-                    }
+                    const diff = newValue
+                        .filter(item => !Object.values(prevValue).includes(item.type))
+                        .map(item => item.type);
 
-                    for (const key in prevValue) {
-                        if (Object.prototype.hasOwnProperty.call(prevValue, key) && !Object.prototype.hasOwnProperty.call(newValue, key)) {
-                            return prevValue[key];
-                        }
+                    if (diff[0]) {
+                        return diff[0]
+                    } else {
+                        return Object.values(prevValue).filter(value => !newValue.some(item => item.type === value))[0]
                     }
                 }
             };
             const changedItem = findChangedItem(selectedAreas, newValue);
-            console.log(changedItem)
-            if (changedItem) {
-                handleCheckboxChange('area', changedItem.type);
+            console.log('abc', changedItem);
+            if (changedItem === Object(changedItem)) {
+                handleCheckboxChange("area", changedItem.type);
+            } else {
+                handleCheckboxChange("area", changedItem);
             }
             setSelectedAreas(newValue);
         }
-    }
+    };
     const getDefaultValues = (filter, topAreas) => {
-        const df = topAreas.filter(option =>
+        const df = topAreas.filter((option) =>
             Object.values(filter).includes(option.type)
         );
         return df;
@@ -249,7 +255,7 @@ const Result = () => {
                             color: "white",
                             fontSize: "14px",
                         }}
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate("/")}
                     >
                         Trở lại
                     </Button>
@@ -321,11 +327,9 @@ const Result = () => {
                                     </LocalizationProvider>
                                 </div>
 
-
                                 <div>
                                     <div className="font-bold texl-l mb-2">Khu vực</div>
                                     <div className="space-y-1">
-
                                         <Autocomplete
                                             multiple
                                             id="size-small-outlined-multi"
@@ -336,11 +340,10 @@ const Result = () => {
                                             defaultValue={defaultAreas}
                                             key={defaultAreas}
                                             renderInput={(params) => (
-                                                <TextField {...params} sx={{"outline": 'red'}}/>
+                                                <TextField {...params} sx={{outline: "red"}}/>
                                             )}
                                             onChange={handle}
                                         />
-
                                     </div>
                                 </div>
 
@@ -412,7 +415,8 @@ const Result = () => {
                                                     {...label}
                                                     value={index}
                                                     checked={
-                                                        (filter.categories && filter.categories.includes(index + 1)) ||
+                                                        (filter.categories &&
+                                                            filter.categories.includes(index + 1)) ||
                                                         false
                                                     }
                                                     onChange={() =>
