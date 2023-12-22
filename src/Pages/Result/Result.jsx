@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./result.css";
 import dayjs from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -10,15 +10,23 @@ import Workspace from "../../Components/Workspace/Workspace.jsx";
 import Navbar from "../../Components/Navbar/Navbar.jsx";
 import Selector from "../../Components/Selector/Selector.jsx";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Button, LinearProgress, Pagination, Slider } from "@mui/material";
 import {
-  areas,
-  statuses,
-  services,
+  Autocomplete,
+  Button,
+  LinearProgress,
+  Pagination,
+  Slider,
+  TextField,
+} from "@mui/material";
+import {
+  formatNumber,
   label,
   options,
   orders,
-  formatNumber,
+  services,
+  statuses,
+  topAreas,
+  types,
 } from "../../Utils/constant.js";
 import useListWorkspaces from "./useListWorkspaces.js";
 import { useNavigate } from "react-router";
@@ -37,6 +45,8 @@ const Result = () => {
     setQueryString,
   } = useListWorkspaces();
   const [filter, setFilter] = useState({});
+  const [selectedAreas, setSelectedAreas] = useState([]);
+  const [defaultAreas, setDefaultAreas] = useState([]);
 
   const formatTime = (time) => {
     return time.format("hh:mm A");
@@ -62,30 +72,38 @@ const Result = () => {
     if (convertedFilter.area) {
       convertedFilter.area = queryString.area.map((item) => parseInt(item, 10));
     }
-
+    if (convertedFilter.categories) {
+      convertedFilter.categories = queryString.categories.map((item) =>
+        parseInt(item, 10)
+      );
+    }
     setFilter({ ...convertedFilter });
+    setSelectedAreas({ ...convertedFilter.area });
+
+    if (convertedFilter.area) {
+      const defaultValues = getDefaultValues(
+        { ...convertedFilter.area },
+        topAreas
+      );
+      setDefaultAreas(defaultValues);
+    }
   }, []);
 
   const handleChange = (key, value) => {
     setFilter({ ...filter, [key]: value });
     setPrice(value);
   };
-
   const handleClock = (key, value) => {
-    console.log(value);
     setFilter({ ...filter, [key]: value });
   };
-
   const handleCheckboxChange = (key, value) => {
     setFilter((prevFilter) => {
       const isKeyPresent = Object.prototype.hasOwnProperty.call(
         prevFilter,
         key
       );
-
       if (!isKeyPresent) {
         prevFilter[key] = [];
-        console.log("alo", prevFilter[key]);
         return {
           ...prevFilter,
           [key]: prevFilter.push(value),
@@ -123,6 +141,12 @@ const Result = () => {
       delete params.area;
     }
     if (
+      !Object.prototype.hasOwnProperty.call(filter, "categories") &&
+      Object.prototype.hasOwnProperty.call(queryString, "categories")
+    ) {
+      delete params.categories;
+    }
+    if (
       !Object.prototype.hasOwnProperty.call(filter, "service") &&
       Object.prototype.hasOwnProperty.call(queryString, "service")
     ) {
@@ -157,7 +181,67 @@ const Result = () => {
   const handleSearchChange = (value) => {
     setNameString(value);
   };
+  const handle = (e, newValue) => {
+    if (newValue.length === 1 && selectedAreas.length === 0) {
+      handleCheckboxChange("area", newValue[0].type);
+      setSelectedAreas(newValue);
+    } else if (newValue.length === 1 && selectedAreas.length !== 2) {
+      handleCheckboxChange("area", newValue[0].type);
+      setSelectedAreas(newValue);
+    } else {
+      const findChangedItem = (prevValue, newValue) => {
+        if (prevValue !== Object(prevValue) && !Array.isArray(prevValue)) {
+          return null;
+        }
+        if (Array.isArray(prevValue)) {
+          for (const newItem of newValue) {
+            if (!prevValue.includes(newItem)) {
+              return newItem;
+            }
+          }
+          for (const oldItem of prevValue) {
+            if (!newValue.includes(oldItem)) {
+              return oldItem;
+            }
+          }
+        } else {
+          if (newValue.length === 0) {
+            return topAreas.find((area) => area.type === selectedAreas[0]);
+          }
 
+          for (const key in newValue) {
+            if (
+              Object.prototype.hasOwnProperty.call(newValue, key) &&
+              !Object.prototype.hasOwnProperty.call(prevValue, key)
+            ) {
+              return newValue[key];
+            }
+          }
+
+          for (const key in prevValue) {
+            if (
+              Object.prototype.hasOwnProperty.call(prevValue, key) &&
+              !Object.prototype.hasOwnProperty.call(newValue, key)
+            ) {
+              return prevValue[key];
+            }
+          }
+        }
+      };
+      const changedItem = findChangedItem(selectedAreas, newValue);
+      console.log(changedItem);
+      if (changedItem) {
+        handleCheckboxChange("area", changedItem.type);
+      }
+      setSelectedAreas(newValue);
+    }
+  };
+  const getDefaultValues = (filter, topAreas) => {
+    const df = topAreas.filter((option) =>
+      Object.values(filter).includes(option.type)
+    );
+    return df;
+  };
   const navigate = useNavigate();
 
   return (
@@ -181,7 +265,7 @@ const Result = () => {
               color: "white",
               fontSize: "14px",
             }}
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
           >
             Trở lại
           </Button>
@@ -255,32 +339,53 @@ const Result = () => {
 
                 <div className="border-b-2 border-black"></div>
                 <div>
-                  <div className="font-bold texl-l mb-2">Khu vực</div>
+                  <div className="font-bold texl-l mb-2">Kiểu địa điểm</div>
                   <div className="space-y-1">
-                    {areas.map((area, index) => (
+                    {types.map((type, index) => (
                       <div key={index} className="flex gap-1 items-center">
                         <Checkbox
                           {...label}
                           value={index}
                           checked={
-                            (filter.area && filter.area.includes(index + 1)) ||
+                            (filter.categories &&
+                              filter.categories.includes(index + 1)) ||
                             false
                           }
                           onChange={() =>
-                            handleCheckboxChange("area", index + 1)
+                            handleCheckboxChange("categories", index + 1)
                           }
                           style={{ color: "#44ADB4", padding: "0" }}
                           size="small"
                         />
-                        <div>{area} </div>
+                        <div>{type} </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
+                <div>
+                  <div className="font-bold texl-l mb-2">Khu vực</div>
+                  <div className="space-y-1">
+                    <Autocomplete
+                      multiple
+                      id="size-small-outlined-multi"
+                      size="small"
+                      classes=".MuiAutocomplete-hasPopupIcon"
+                      options={topAreas}
+                      getOptionLabel={(option) => option.area}
+                      defaultValue={defaultAreas}
+                      key={defaultAreas}
+                      renderInput={(params) => (
+                        <TextField {...params} sx={{ outline: "red" }} />
+                      )}
+                      onChange={handle}
+                    />
+                  </div>
+                </div>
+
                 <div className="border-b-2 border-black"></div>
                 <div>
-                  <div className="font-bold texl-l mb-2">Dịch vụ</div>
+                  <div className="font-bold texl-l mb-2">Tiện ích</div>
                   <div className="space-y-1">
                     <div className="space-y-1">
                       {services.map((service, index) => (
@@ -358,7 +463,7 @@ const Result = () => {
 
                 <div className="pt-6 pb-0">
                   <button
-                    className="rounded-lg w-full h-12 "
+                    className="rounded-lg w-full h-12 focus:outline-none hover:outline-none "
                     onClick={handleSubmit}
                     style={{ "background-color": "#44ADB4", color: "white" }}
                   >

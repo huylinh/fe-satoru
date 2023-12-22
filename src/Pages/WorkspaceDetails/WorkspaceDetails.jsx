@@ -158,7 +158,11 @@ function WorkspaceDetails() {
             </div>
             <ul className="list-disc px-12">
               <li>
-                {formatNumber(parseInt(workspaceDetailsData.data.price)) +
+
+                {formatNumber(parseInt(workspaceDetailsData.data.price_min)) +
+                  " VND"}{" "}
+                -{" "}
+                {formatNumber(parseInt(workspaceDetailsData.data.price_max)) +
                   " VND"}
               </li>
             </ul>
