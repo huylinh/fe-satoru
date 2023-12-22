@@ -1,0 +1,10 @@
+/* Thêm kiểu cho phần mới "left-section" */
+.left-section {
+  display: flex;
+  align-items: center; /* Canh giữa theo chiều dọc */
+}
+
+/* Kiểu cho logo */
+.header-logo {
+  width: 130px; /* Tùy chỉnh chiều rộng tối đa của logo */
+}
