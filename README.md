@@ -31,4 +31,10 @@ npm install tailwindcss
 
 ```
  npm install swiper
- ```
+```
+```
+npm install react-geolocated
+```
+```
+npm install react-geolocated
+``` 

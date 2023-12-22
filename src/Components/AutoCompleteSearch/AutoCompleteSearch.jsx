@@ -2,10 +2,11 @@ import { Button } from "@mui/material";
 import "./autocompletesearch.css";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import useListWorkspaces from "../../Pages/Result/useListWorkspaces";
 
 const AutoCompleteSearch = () => {
-
   const options = ["Đề xuất địa chỉ gần nhất"];
+  const { setQueryString } = useListWorkspaces();
 
   const navigate = useNavigate();
 
@@ -34,7 +35,8 @@ const AutoCompleteSearch = () => {
   }, []);
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    const newValue = event.target.value;
+    setValue(newValue);
   };
 
   const handleSuggestionClick = (suggetion) => {
@@ -42,6 +44,13 @@ const AutoCompleteSearch = () => {
     setShowSuggestions(false);
   };
 
+  const handleSearchButtonClick = () => {
+    setQueryString({
+      name: value,
+      // Add any other parameters you need
+    });
+    navigate(`/result?page=1&limit=5&name=${value}`);
+  };
 
   return (
     <div className="container">
@@ -49,6 +58,11 @@ const AutoCompleteSearch = () => {
         <input
           value={value}
           onChange={handleChange}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              handleSearchButtonClick();
+            }
+          }}
           placeholder="Tìm kiếm ....."
           onFocus={() => setShowSuggestions(true)}
         />
@@ -70,6 +84,7 @@ const AutoCompleteSearch = () => {
         <Button
           variant="contained"
           style={{ backgroundColor: "#44adb4", color: "white" }}
+          onClick={handleSearchButtonClick}
         >
           Tìm kiếm
         </Button>
