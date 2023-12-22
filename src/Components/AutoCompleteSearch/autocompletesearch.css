@@ -1,0 +1,69 @@
+.container {
+  display: flex;
+  justify-content: center;
+  max-width: 960px;
+  margin-top: 40px;
+}
+.autocomplete {
+  position: relative;
+  width: 500px;
+  border: 1px solid #d4d4d4;
+  border-radius: 10px;
+}
+
+.autocomplete input {
+  width: 100%;
+  border: none;
+  margin: 10px 0;
+  font-size: 16px;
+  padding: 10px 10px 0 10px;
+  justify-content: center;
+  text-align: left;
+}
+
+input:focus {
+  outline: none;
+}
+
+/* .suggestions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #d4d4d4;
+  background-color: #f7f7f7;
+  border-radius: 0 0 10px 10px;
+} */
+
+.suggestions {
+  position: absolute;
+  top: 100%; /* Hiển thị gợi ý phía dưới input */
+  left: 0;
+  right: 0;
+  max-height: 200px; /* Giới hạn chiều cao của danh sách gợi ý */
+  overflow-y: auto; /* Cho phép cuộn khi danh sách quá dài */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #f7f7f7;
+  z-index: 1; /* Đảm bảo hiển thị trên cùng */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 15px 15px;
+}
+
+.suggestions li {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.autocomplete li:hover {
+  background-color: #d4d4d4;
+}
+
+.r-button{
+  justify-content: center;
+  display: flex;
+  margin-left: 2.5rem;
+
+}
+
