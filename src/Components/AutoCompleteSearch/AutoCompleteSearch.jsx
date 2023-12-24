@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useListWorkspaces from "../../Pages/Result/useListWorkspaces";
 
+import { geolocated } from "react-geolocated";
+
 const AutoCompleteSearch = () => {
   const options = ["Đề xuất địa chỉ gần nhất"];
   const { setQueryString } = useListWorkspaces();
@@ -11,6 +13,7 @@ const AutoCompleteSearch = () => {
   const navigate = useNavigate();
 
   const [value, setValue] = useState("");
+  const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const suggestions = options.filter((option) =>
@@ -34,21 +37,40 @@ const AutoCompleteSearch = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (error) => {
+            console.error("Error getting location:", error.message);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by your browser");
+      }
+    };
+
+    getLocation();
+  }, []);
+
   const handleChange = (event) => {
     const newValue = event.target.value;
     setValue(newValue);
   };
 
-  const handleSuggestionClick = (suggetion) => {
-    // setValue(suggetion);
+  const handleSuggestionClick = () => {
+    navigate(`/result?page=1&limit=5&sort_distance=true&lat=${location.latitude}&long=${location.longitude}`);
+    console.log(location);
     setShowSuggestions(false);
   };
 
   const handleSearchButtonClick = () => {
-    setQueryString({
-      name: value,
-      // Add any other parameters you need
-    });
     navigate(`/result?page=1&limit=5&name=${value}`);
   };
 
