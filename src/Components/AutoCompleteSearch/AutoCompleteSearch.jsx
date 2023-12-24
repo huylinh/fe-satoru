@@ -65,7 +65,7 @@ const AutoCompleteSearch = () => {
   };
 
   const handleSuggestionClick = () => {
-    navigate(`/result?page=1&limit=5&sort_distance=true&lat=${location.latitude}&long=${location.longitude}`);
+    navigate(`/result?page=1&limit=5&sort_distance=1&lat=${location.latitude}&long=${location.longitude}`);
     console.log(location);
     setShowSuggestions(false);
   };

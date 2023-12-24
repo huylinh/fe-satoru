@@ -6,7 +6,10 @@ import imageWorkspace3 from "../../assets/workspace3.jpg";
 import imageWorkspace4 from "../../assets/workspace4.jpg";
 import imageWorkspace5 from "../../assets/workspace5.jpg";
 import "./proposal.css";
-import { useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Box } from "@mui/material";
+import {getproposeWorkspace} from "../../Services/districtService"
 const Data = [
   {
     id: 1,
@@ -51,6 +54,28 @@ const Data = [
 ];
 
 const List = () => {
+
+  const { isLoading, data: proposeWorkspace } = useQuery({
+    queryKey: ['propose'],
+    queryFn: () => getproposeWorkspace(),
+  });
+
+  if (isLoading || !proposeWorkspace) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          minWidth: "100%",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <section className="list container section">
       <div className="secTitle">
@@ -62,18 +87,19 @@ const List = () => {
         </h3>
       </div>
       <div className="secContent grid">
-        {Data.map(({ id, imgSrc, name, description, location, star }) => {
+        {proposeWorkspace.map((card , id) => {
           return (
             <div key={id} className="singleDestination">
               <div className="imageDiv">
-                <img src={imgSrc} alt={name} />
+                {/* <img src={proposeWorkspace.workspace_images["image_url"]} alt={proposeWorkspace.name} /> */}
+                <img src={card.workspace_images[0].image_url} alt={card.name} />
               </div>
 
               <div className="cardInfo">
-                <h4 className="destTitle">{name}</h4>
+                <h4 className="destTitle">{card.name}</h4>
                 <span className="continent flex">
                   {/* <BiCurrentLocation className="icon" /> */}
-                  <span>{location}</span>
+                  <span>{card.address}</span>
                 </span>
 
                 <div className="fees flex">
@@ -89,7 +115,7 @@ const List = () => {
                 <div className="flex items-baseline space-x-2">
                   <Rating
                     name="text-feedback"
-                    value={star}
+                    value={card.average_rating}
                     readOnly
                     precision={0.5}
                     size="small"
@@ -97,7 +123,7 @@ const List = () => {
                       <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
                     }
                   />
-                  <div className="text-xl  ">{star}</div>
+                  <div className="text-xl">{card.average_rating}</div>
                 </div>
               </div>
             </div>

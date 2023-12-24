@@ -13,3 +13,16 @@ export const getDistrict = async () => {
     throw error;
   }
 };
+
+export const getproposeWorkspace = async () => {
+  try {
+    const res = await publicHttp({
+      method: "GET",
+      url: `/workspaces/recommend`,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching proposeWorkspace:", error);
+    throw error;
+  }
+};
