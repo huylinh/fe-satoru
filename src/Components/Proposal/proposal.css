@@ -87,6 +87,7 @@
         .destTitle {
           color: var(--blackColor);
           font-size: 1.25rem;
+          font-weight: bold;
         }
 
         .continent {

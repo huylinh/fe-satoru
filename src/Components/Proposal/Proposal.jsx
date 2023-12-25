@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/material";
 import {getproposeWorkspace} from "../../Services/districtService"
+import {useNavigate} from "react-router-dom";
+
 const Data = [
   {
     id: 1,
@@ -55,6 +57,8 @@ const Data = [
 
 const List = () => {
 
+  const navigate = useNavigate()
+
   const { isLoading, data: proposeWorkspace } = useQuery({
     queryKey: ['propose'],
     queryFn: () => getproposeWorkspace(),
@@ -89,14 +93,14 @@ const List = () => {
       <div className="secContent grid">
         {proposeWorkspace.map((card , id) => {
           return (
-            <div key={id} className="singleDestination">
+            <div key={id} className="singleDestination" onClick={() => navigate(`/workspaces/${card.id}`)}>
               <div className="imageDiv">
                 {/* <img src={proposeWorkspace.workspace_images["image_url"]} alt={proposeWorkspace.name} /> */}
                 <img src={card.workspace_images[0].image_url} alt={card.name} />
               </div>
 
               <div className="cardInfo">
-                <h4 className="destTitle">{card.name}</h4>
+                <h3 className="destTitle">{card.name}</h3>
                 <span className="continent flex">
                   {/* <BiCurrentLocation className="icon" /> */}
                   <span>{card.address}</span>
