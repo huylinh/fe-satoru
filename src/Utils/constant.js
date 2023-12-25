@@ -38,9 +38,8 @@ export const statuses = ["Đang Đông đúc", "Bình thường", "Đang Vắng 
 export const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 export const options = [
-  { value: 1, label: "Giá" },
-  { value: 2, label: "Đánh giá" },
-  { value: 3, label: "Khoảng cách" },
+  { value: 1, label: "Đánh giá" },
+  { value: 2, label: "Khoảng cách" },
 ];
 
 export const orders = [

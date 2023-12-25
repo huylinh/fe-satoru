@@ -47,6 +47,8 @@ const Result = () => {
     const [filter, setFilter] = useState({});
     const [selectedAreas, setSelectedAreas] = useState([]);
     const [defaultAreas, setDefaultAreas] = useState([]);
+    const [latitude, setLatitude] = useState();
+    const [longitude, setLongitude] = useState();
 
     const formatTime = (time) => {
         return time.format("hh:mm A");
@@ -86,7 +88,39 @@ const Result = () => {
                 {...convertedFilter.area}, topAreas);
             setDefaultAreas(defaultValues);
         }
+        
+        const getUserLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
+        }
+
+        const successCallback = (position) => {
+            const { latitude, longitude } = position.coords;
+
+            setLatitude(latitude);
+            setLongitude(longitude);
+
+            console.log("Longitude is " + latitude + " Latitude is " + longitude);
+        }
+
+        const errorCallback = (error) => {
+            console.error(`Error getting user location: ${error.message}`);
+        }
+
+        getUserLocation();
     }, []);
+
+    useEffect(() => {
+        handleSubmit();
+    }, [selection, order]);
+
+    useEffect(() => {
+        handleSubmit();
+    }, [latitude, longitude]);
+
     const handleChange = (key, value) => {
         setFilter({...filter, [key]: value});
         setPrice(value);
@@ -122,15 +156,26 @@ const Result = () => {
         });
     };
 
+    const getCurrentPosition = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) { 
+                setCurrentPosition({
+                    lat: position.coords.latitude,
+                    long: position.coords.longitude,
+                });
+            });
+        }
+    };
+
     const handleSubmit = () => {
         const params = {
             ...queryString,
             ...filter,
             ...(nameString.length > 0 ? {name: nameString} : {}),
-            ...(selection === 1 && order === 1 ? {sort_price: 0} : {}),
-            ...(selection === 1 && order === 2 ? {sort_price: 1} : {}),
-            ...(selection === 2 && order === 1 ? {sort_rating: 0} : {}),
-            ...(selection === 2 && order === 2 ? {sort_rating: 1} : {}),
+            ...(selection === 1 && order === 1 ? {sort_rating: 1} : {}),
+            ...(selection === 1 && order === 2 ? { sort_rating: 0 } : {}),
+            ...(selection === 2 && order === 1 ? { sort_distance: 1, lat: latitude, long: longitude } : {}),
+            ...(selection === 2 && order === 2 ? { sort_distance: 0, lat: latitude, long: longitude } : {}),
         };
         if (
             !Object.prototype.hasOwnProperty.call(filter, "area") &&
@@ -160,10 +205,12 @@ const Result = () => {
             delete params.name;
         }
         if (selection !== 1) {
-            delete params.sort_price;
+            delete params.sort_rating;
         }
         if (selection !== 2) {
-            delete params.sort_rating;
+            delete params.lat;
+            delete params.long;
+            delete params.sort_distance;
         }
         setQueryString(params);
         window.scrollTo(0, 0);
