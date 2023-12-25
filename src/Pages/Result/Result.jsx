@@ -156,23 +156,12 @@ const Result = () => {
         });
     };
 
-    const getCurrentPosition = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) { 
-                setCurrentPosition({
-                    lat: position.coords.latitude,
-                    long: position.coords.longitude,
-                });
-            });
-        }
-    };
-
     const handleSubmit = () => {
         const params = {
             ...queryString,
             ...filter,
             ...(nameString.length > 0 ? {name: nameString} : {}),
-            ...(selection === 1 && order === 1 ? {sort_rating: 1} : {}),
+            ...(selection === 1 && order === 1 ? { sort_rating: 1} : {}),
             ...(selection === 1 && order === 2 ? { sort_rating: 0 } : {}),
             ...(selection === 2 && order === 1 ? { sort_distance: 1, lat: latitude, long: longitude } : {}),
             ...(selection === 2 && order === 2 ? { sort_distance: 0, lat: latitude, long: longitude } : {}),
