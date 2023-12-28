@@ -113,13 +113,13 @@ const Result = () => {
         getUserLocation();
     }, []);
 
-    useEffect(() => {
-        handleSubmit();
-    }, [selection, order]);
+    // useEffect(() => {
+    //     handleSubmit();
+    // }, [selection, order]);
 
-    useEffect(() => {
-        handleSubmit();
-    }, [latitude, longitude]);
+    // useEffect(() => {
+    //     handleSubmit();
+    // }, [latitude, longitude]);
 
     const handleChange = (key, value) => {
         setFilter({...filter, [key]: value});

@@ -9,37 +9,6 @@ import image from "../../assets/workspace1.jpg";
 import { useQuery } from "@tanstack/react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 
-// const data = [
-//   {
-//     name: "InFact coffee",
-//     quantity: "21 địa điểm",
-//     image:
-//       "https://cdn.tgdd.vn/Files/2021/12/14/1404397/10-quan-cafe-yen-tinh-o-ha-noi-de-hoc-va-lam-viec-tot-nhat-202112142135375656.jpg",
-//   },
-//   {
-//     name: "Tranquil Books & Coffee",
-//     quantity: "17 địa điểm",
-//     image: "https://toplist.vn/images/800px/the-cuppa-coffee-873616.jpg",
-//   },
-//   {
-//     name: "Xofa Café & Bistro",
-//     quantity: "18 địa điểm",
-//     image:
-//       "https://znews-photo.zadn.vn/w1024/Uploaded/sgogtn/2020_02_03/IMG_3012_1.JPG",
-//   },
-//   {
-//     name: "Cuppa Coffee",
-//     quantity: "26 địa điểm",
-//     image: "https://kenh14cdn.com/2020/6/27/img7661-1593231971489991996472.jpg",
-//   },
-//   {
-//     name: "BEYOU Tea & Coffee",
-//     quantity: "23 địa điểm",
-//     image:
-//       "https://cdn.tgdd.vn/Files/2021/12/14/1404397/10-quan-cafe-yen-tinh-o-ha-noi-de-hoc-va-lam-viec-tot-nhat-202112142206017800.jpg",
-//   },
-// ];
-
 const SliderButton = () => {
   const swiper = useSwiper();
   return (
@@ -84,7 +53,9 @@ const ListWorkspace = () => {
           <SliderButton />
           {District.filter((card) => card.workspaces_count > 0).map(
             (card, i) => (
-              <SwiperSlide key={i}>
+              <SwiperSlide key={i}
+                onClick={() => navigate(`/result?page=1&limit=5&area=${card.id}`)}
+              >
                 <div className="flexColStart r-card">
                   <img className="r-image" src={image} alt="home" />
                   <span className="r-name">{card.name}</span>

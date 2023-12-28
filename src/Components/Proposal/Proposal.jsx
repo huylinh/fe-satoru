@@ -1,66 +1,17 @@
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
-import imageWorkspace1 from "../../assets/workspace1.jpg";
-import imageWorkspace2 from "../../assets/workspace2.jpg";
-import imageWorkspace3 from "../../assets/workspace3.jpg";
-import imageWorkspace4 from "../../assets/workspace4.jpg";
-import imageWorkspace5 from "../../assets/workspace5.jpg";
 import "./proposal.css";
 import { useQuery } from "@tanstack/react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/material";
-import {getproposeWorkspace} from "../../Services/districtService"
-import {useNavigate} from "react-router-dom";
-
-const Data = [
-  {
-    id: 1,
-    imgSrc: imageWorkspace1,
-    name: "Creative Haven",
-    description: "CUL TURAL RELAX",
-    location: "8 Trần Đại Nghĩa",
-    star: "5",
-  },
-  {
-    id: 2,
-    imgSrc: imageWorkspace2,
-    name: "Tranquil Workspace",
-    description: "CUL TURAL RELAX",
-    location: "4 Tạ Quang Bửu",
-    star: "4.7",
-  },
-  {
-    id: 3,
-    imgSrc: imageWorkspace3,
-    name: "Multitask Zone",
-    description: "CUL TURAL RELAX",
-    location: "10 Phạm Ngọc Thạch",
-    star: "4.7",
-  },
-  {
-    id: 4,
-    imgSrc: imageWorkspace4,
-    name: "New Energy Studio",
-    description: "CUL TURAL RELAX",
-    location: "18 Hai Ba Trung",
-    star: "4.5",
-  },
-  {
-    id: 5,
-    imgSrc: imageWorkspace5,
-    name: "Serene Studio",
-    description: "CUL TURAL RELAX",
-    location: "17 Nguyễn Chí Thanh",
-    star: "4.5",
-  },
-];
+import { getproposeWorkspace } from "../../Services/districtService";
+import { useNavigate } from "react-router-dom";
 
 const List = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { isLoading, data: proposeWorkspace } = useQuery({
-    queryKey: ['propose'],
+    queryKey: ["propose"],
     queryFn: () => getproposeWorkspace(),
   });
 
@@ -91,31 +42,25 @@ const List = () => {
         </h3>
       </div>
       <div className="secContent grid">
-        {proposeWorkspace.map((card , id) => {
+        {proposeWorkspace.map((card, id) => {
           return (
-            <div key={id} className="singleDestination" onClick={() => navigate(`/workspaces/${card.id}`)}>
+            <div
+              key={id}
+              className="singleDestination"
+              onClick={() => navigate(`/workspaces/${card.id}`)}
+            >
               <div className="imageDiv">
-                {/* <img src={proposeWorkspace.workspace_images["image_url"]} alt={proposeWorkspace.name} /> */}
                 <img src={card.workspace_images[0].image_url} alt={card.name} />
               </div>
 
               <div className="cardInfo">
                 <h3 className="destTitle">{card.name}</h3>
                 <span className="continent flex">
-                  {/* <BiCurrentLocation className="icon" /> */}
                   <span>{card.address}</span>
                 </span>
 
-                <div className="fees flex">
-                  {/* <div className="star">
-                    <h5>{star}</h5>
-                  </div> */}
-                  <span>Quản lý</span>
-                </div>
+                <div className="fees flex"></div>
 
-                {/* <div className="desc">
-                  <p>{description}</p>
-                </div> */}
                 <div className="flex items-baseline space-x-2">
                   <Rating
                     name="text-feedback"
