@@ -15,20 +15,20 @@ function ReviewProgressBar({ workspaceAvgRating, reviews }) {
     0
   );
 
-  const price_total_rating = reviews.reduce(
-    (acc, item) => acc + Number(item.price_rating),
-    0
-  );
+  // const price_total_rating = reviews.reduce(
+  //   (acc, item) => acc + Number(item.price_rating),
+  //   0
+  // );
   // workspace details rating average
   const wifi_average_rating = (wifi_total_rating / reviews.length).toFixed(1);
 
   const space_average_rating = (space_total_rating / reviews.length).toFixed(1);
 
-  const price_average_rating = (price_total_rating / reviews.length).toFixed(1);
+  // const price_average_rating = (price_total_rating / reviews.length).toFixed(1);
 
   const spaceReviewClassName = convertToProgressBar(space_average_rating);
   const wifiReviewClassName = convertToProgressBar(wifi_average_rating);
-  const priceReviewClassName = convertToProgressBar(price_average_rating);
+  // const priceReviewClassName = convertToProgressBar(price_average_rating);
 
   return (
     <>
@@ -45,7 +45,7 @@ function ReviewProgressBar({ workspaceAvgRating, reviews }) {
         </div>
       </div>
       {/* progress bar */}
-      <div className="py-4 flex items-center gap-4">
+      <div className="mt-5 py-4 flex items-center gap-4">
         <span className="w-24 font-medium text-base">Không gian</span>
         <div className="inline-block w-80 h-5 bg-slate-200 rounded-lg">
           <div
@@ -72,7 +72,7 @@ function ReviewProgressBar({ workspaceAvgRating, reviews }) {
           <span className="font-medium text-base">{wifi_average_rating}/5</span>
         </div>
       </div>
-
+      {/* 
       <div className="py-4 flex items-center gap-4">
         <span className="w-24 font-medium text-base">Giá</span>
         <div className="inline-block w-80 h-5 bg-slate-200 rounded-lg">
@@ -86,7 +86,7 @@ function ReviewProgressBar({ workspaceAvgRating, reviews }) {
             {price_average_rating}/5
           </span>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
