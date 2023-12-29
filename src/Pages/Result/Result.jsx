@@ -187,8 +187,8 @@ const Result = () => {
         ) {
             delete params.status;
         }
-        if (queryString.name.length === 0) {
-            delete params.name;
+        if (Object.prototype.hasOwnProperty.call(queryString, "name")  ) {
+            if (queryString.name.length === 0) delete params.name;
         }
         if (selection !== 1) {
             delete params.sort_rating;
