@@ -113,13 +113,11 @@ const Result = () => {
         getUserLocation();
     }, []);
 
-    // useEffect(() => {
-    //     handleSubmit();
-    // }, [selection, order]);
-
-    // useEffect(() => {
-    //     handleSubmit();
-    // }, [latitude, longitude]);
+    useEffect(() => {
+        if (selection !== undefined || order !== undefined) {
+            handleSubmit();
+        }
+    }, [selection, order]);
 
     const handleChange = (key, value) => {
         setFilter({...filter, [key]: value});
@@ -160,11 +158,10 @@ const Result = () => {
         const params = {
             ...queryString,
             ...filter,
-            ...(nameString.length > 0 ? {name: nameString} : {}),
-            ...(selection === 1 && order === 1 ? { sort_rating: 1} : {}),
-            ...(selection === 1 && order === 2 ? { sort_rating: 0 } : {}),
-            ...(selection === 2 && order === 1 ? { sort_distance: 1, lat: latitude, long: longitude } : {}),
-            ...(selection === 2 && order === 2 ? { sort_distance: 0, lat: latitude, long: longitude } : {}),
+            ...(selection === 1 && order === 1 ? { sort_rating: 0 } : {}),
+            ...(selection === 1 && order === 2 ? { sort_rating: 1 } : {}),
+            ...(selection === 2 && order === 1 ? { sort_distance: 0, lat: latitude, long: longitude } : {}),
+            ...(selection === 2 && order === 2 ? { sort_distance: 1, lat: latitude, long: longitude } : {}),
         };
         if (
             !Object.prototype.hasOwnProperty.call(filter, "area") &&
@@ -190,7 +187,7 @@ const Result = () => {
         ) {
             delete params.status;
         }
-        if (!(nameString.length > 0)) {
+        if (queryString.name.length === 0) {
             delete params.name;
         }
         if (selection !== 1) {
@@ -214,6 +211,10 @@ const Result = () => {
 
     const handleSearchChange = (value) => {
         setNameString(value);
+    };
+    const searchSubmit = () => {
+        queryString.name = nameString;
+        handleSubmit();
     };
     const handle = (e, newValue) => {
 
@@ -276,7 +277,7 @@ const Result = () => {
                 <div className="">
                     <Navbar
                         onSearchChange={handleSearchChange}
-                        handleSearchSubmit={handleSubmit}
+                        handleSearchSubmit={searchSubmit}
                     ></Navbar>
                 </div>
                 <div
