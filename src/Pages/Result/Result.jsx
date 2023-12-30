@@ -335,7 +335,7 @@ const Result = () => {
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={["TimePicker"]}>
                                             <TimePicker
-                                                defaultValue={dayjs("2023-12-6T07:30")}
+                                                // defaultValue={dayjs("2023-12-6T07:30")}
                                                 components={{
                                                     OpenPickerIcon: () => (
                                                         <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
@@ -350,7 +350,7 @@ const Result = () => {
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={["TimePicker"]}>
                                             <TimePicker
-                                                defaultValue={dayjs("2023-12-6T22:00")}
+                                                // defaultValue={dayjs("2023-12-6T22:00")}
                                                 components={{
                                                     OpenPickerIcon: () => (
                                                         <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
