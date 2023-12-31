@@ -198,7 +198,13 @@ const Result = () => {
             delete params.long;
             delete params.sort_distance;
         }
+        if (nameString == "") {
+            delete params.name
+        } else {
+            params.name = nameString
+        }
         setQueryString(params);
+        
         window.scrollTo(0, 0);
     };
 
@@ -211,9 +217,9 @@ const Result = () => {
 
     const handleSearchChange = (value) => {
         setNameString(value);
+        queryString.name = nameString;
     };
     const searchSubmit = () => {
-        queryString.name = nameString;
         handleSubmit();
     };
     const handle = (e, newValue) => {
