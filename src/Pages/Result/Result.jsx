@@ -155,9 +155,11 @@ const Result = () => {
     };
 
     const handleSubmit = () => {
+        const name = queryString.name;
         const params = {
             ...queryString,
             ...filter,
+            ...(nameString !== "" ? { name: nameString } : {name: name}),
             ...(selection === 1 && order === 1 ? { sort_rating: 0 } : {}),
             ...(selection === 1 && order === 2 ? { sort_rating: 1 } : {}),
             ...(selection === 2 && order === 1 ? { sort_distance: 0, lat: latitude, long: longitude } : {}),
@@ -198,13 +200,7 @@ const Result = () => {
             delete params.long;
             delete params.sort_distance;
         }
-        if (nameString == "") {
-            delete params.name
-        } else {
-            params.name = nameString
-        }
         setQueryString(params);
-        
         window.scrollTo(0, 0);
     };
 
@@ -217,9 +213,11 @@ const Result = () => {
 
     const handleSearchChange = (value) => {
         setNameString(value);
-        queryString.name = nameString;
     };
     const searchSubmit = () => {
+        if (nameString == "") {
+            queryString.name = "";
+        }
         handleSubmit();
     };
     const handle = (e, newValue) => {
