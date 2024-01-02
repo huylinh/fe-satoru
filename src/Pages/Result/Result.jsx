@@ -155,6 +155,7 @@ const Result = () => {
     };
 
     const handleSubmit = () => {
+        if (queryString.name === undefined) queryString.name = "";
         const name = queryString.name;
         const params = {
             ...queryString,
