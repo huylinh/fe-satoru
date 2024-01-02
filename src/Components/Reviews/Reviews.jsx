@@ -2,6 +2,7 @@ import { useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Rating from "@mui/material/Rating";
 import { format, parseISO } from "date-fns";
+import StarIcon from "@mui/icons-material/Star";
 function Reviews({ workspaceReviewsData, reviewSortOpt }) {
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -29,10 +30,7 @@ function Reviews({ workspaceReviewsData, reviewSortOpt }) {
   return (
     <>
       {currentReviews.map((review, index) => (
-        <div 
-          className="flex text-left gap-6 my-4"
-          key={index}
-        >
+        <div className="flex text-left gap-6 my-4" key={index}>
           <div>
             <img
               src={review.user.avatar_url}
@@ -46,7 +44,17 @@ function Reviews({ workspaceReviewsData, reviewSortOpt }) {
               <h5>{format(parseISO(review.created_at), "dd-MM-yyyy")}</h5>
             </div>
             <div className="flex items-center gap-4 ">
-              <Rating name="read-only" value={review.average_rating} readOnly />
+              <Rating
+                name="text-feedback"
+                value={review.average_rating}
+                readOnly
+                precision={0.5}
+                size="small"
+                emptyIcon={
+                  <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                }
+              />
+              {/* <Rating name="read-only" value={review.average_rating} readOnly /> */}
               <span>{review.average_rating}</span>
             </div>
             <div>{review.comment}</div>

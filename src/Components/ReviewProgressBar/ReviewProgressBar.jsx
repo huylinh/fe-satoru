@@ -23,11 +23,15 @@ function ReviewProgressBar({ workspaceAvgRating, reviews }) {
   const wifi_average_rating = (wifi_total_rating / reviews.length).toFixed(1);
 
   const space_average_rating = (space_total_rating / reviews.length).toFixed(1);
-
+  const newAvgRating = (
+    (Number(wifi_average_rating) + Number(space_average_rating)) /
+    2
+  ).toFixed(1); // bug of VTK
   // const price_average_rating = (price_total_rating / reviews.length).toFixed(1);
 
   const spaceReviewClassName = convertToProgressBar(space_average_rating);
   const wifiReviewClassName = convertToProgressBar(wifi_average_rating);
+
   // const priceReviewClassName = convertToProgressBar(price_average_rating);
 
   return (

@@ -6,14 +6,17 @@ import SellIcon from "@mui/icons-material/Sell";
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { formatNumber } from "../../Utils/constant.js";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Workspace = ({ data }) => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  console.log(data);
 
   return (
-    <div className="wrap hover:cursor-pointer" onClick={() => navigate(`/workspaces/${data.id}`)} >
+    <div
+      className="wrap hover:cursor-pointer"
+      onClick={() => navigate(`/workspaces/${data.id}`)}
+    >
       <div className="flex" style={{ gap: "16px" }}>
         <div className="image-container">
           <img src={data.image} className="image" alt="" />
@@ -58,7 +61,12 @@ const Workspace = ({ data }) => {
                 <SellIcon></SellIcon>
               </div>
               <span>
-                Giá : <strong> {formatNumber(data.price_min)} - {formatNumber(data.price_max)} VND/Ngày</strong>
+                Giá :{" "}
+                <strong>
+                  {" "}
+                  {formatNumber(data.price_min)} -{" "}
+                  {formatNumber(data.price_max)} VND/Ngày
+                </strong>
               </span>
             </div>
             <div className="flex gap-x-3">
